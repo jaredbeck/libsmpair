@@ -1,1 +1,4 @@
 Swiss McMahon Pairing
+by Jared Beck
+
+Usage: ruby smpair.rb players.csv
