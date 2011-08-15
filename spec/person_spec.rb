@@ -9,8 +9,11 @@ describe Person do
     end
 
     it "requires a valid rating" do
-      expect { Person.new("Jared",nil) }.
-        to raise_error(StandardError, "Invalid rating")
+      bad_ratings = [nil, 0.0, -0.9, 0.7]
+      bad_ratings.each do |r|
+        expect { Person.new("Jared",r) }.
+          to raise_error(StandardError, "Invalid rating")
+      end
     end
 
   end

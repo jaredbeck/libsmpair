@@ -14,8 +14,13 @@ class Person
 
   def raise_if_not_valid
     raise "Name is required" if @name.nil? or @name.strip.empty?
-    if @rating.nil? or @rating == 0 or @rating < -35 or @rating > 9 then
-      raise "Invalid rating"
-    end
+    raise "Invalid rating" unless valid_rating?
+  end
+
+  def valid_rating?
+    # In the AGA, valid kyu ratings are -1.0 and below, while valid dan 
+    # ratings are 1.0 and above. There is no upper or lower limit in the 
+    # AGA database. The current range is -49.67667 to 10.24712
+    !@rating.nil? and (@rating <= -1.0 or @rating >= +1.0)
   end
 end
