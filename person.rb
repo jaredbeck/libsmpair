@@ -3,9 +3,7 @@ class Person
   include Comparable
 
   def <=>(p)
-    if self.rating > p.rating then return +1 end
-    if self.rating == p.rating then return 0 end
-    if self.rating < p.rating then return -1 end
+    self.rating <=> p.rating
   end
 
   def initialize(n,r)
