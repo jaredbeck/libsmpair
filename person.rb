@@ -1,6 +1,13 @@
 class Person
   attr_accessor :name, :rating
-  
+  include Comparable
+
+  def <=>(p)
+    if self.rating > p.rating then return +1 end
+    if self.rating == p.rating then return 0 end
+    if self.rating < p.rating then return -1 end
+  end
+
   def initialize(n,r)
     @name = n.to_s
     @rating = r.to_f
@@ -13,5 +20,4 @@ class Person
       raise "Invalid rating"
     end
   end
-
 end

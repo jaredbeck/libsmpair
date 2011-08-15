@@ -2,12 +2,11 @@ require 'CSV'
 require './person'
 
 class PersonSet
-  def initialize()
-    @people = []
-  end
-  
-  def to_array() @people end
-  
+  include Enumerable
+
+  def each() @people.each { |p| yield p } end
+  def initialize() @people = [] end
+
   def read_csv(f)
     begin
       c = CSV.open f, :headers => true 
@@ -25,5 +24,6 @@ class PersonSet
       end
     end
   end
-  
+
+  def size() @people.length end
 end
