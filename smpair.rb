@@ -24,8 +24,9 @@ bands = field.bands bar, rounds
 # dev. output
 # field.pretty_print
 puts "#{field.count} players"
-puts "band".ljust(10) + "players".ljust(15) + "initial score"
+puts "band".ljust(10) + "ratings".ljust(20) + "players".ljust(15) + "initial score"
 bands.each_with_index do |b,i|
-  puts i.to_s.ljust(10) + b.count.to_s.ljust(15) + b.score.to_s
+  rating_range = b.max.rating.round(2).to_s + " to " + b.min.rating.round(2).to_s
+  puts i.to_s.ljust(10) + rating_range.ljust(20) + b.count.to_s.ljust(15) + b.score.to_s
 end
 # bands.last.pretty_print
