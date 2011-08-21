@@ -1,25 +1,25 @@
 require './field'
+require './monkeypatch_core'
 
-# cmd line args
-if ARGV.length != 2 then
-  puts "Usage: ruby smpair.rb players-file bar"
-  puts " players-file\tpath to a csv file with headers (eg. name,rating)"
-  puts " bar\t\tthe rating threshold defining the top group"
+# usage instructions
+if ARGV.length != 3 then
+  puts "Usage: ruby smpair.rb <players-file> <bar> <rounds>"
+  puts " players-file".ljust(15) + "path to a csv file with headers (eg. name,rating)"
+  puts " bar".ljust(15) + "decimal rating threshold defining the top band"
+  puts " rounds".ljust(15) + "number of rounds in tournament"
   exit
 end
 
+# validate and load cmd line args
 player_list_filepath = ARGV[0]
-bar = ARGV[1]
-
-# Bar must be a decimal number
-if !bar.match(/^\-?[0-9]+\.[0-9]+$/) or bar.to_f == 0.0 then
-  abort "Invalid bar.  Bar must be a decimal number.  See usage instructions."
-end
-bar = bar.to_f
+abort "Bar must be a decimal number." unless ARGV[1].strictly_decimal?
+bar = ARGV[1].to_f
+abort "Rounds must be an integer." unless ARGV[2].strictly_integer?
+rounds = ARGV[2].to_i
 
 # read csv player list and construct bands
 field = Field.read_csv player_list_filepath
-bands = field.bands(bar)
+bands = field.bands bar, rounds
 
 # dev. output
 # field.pretty_print
