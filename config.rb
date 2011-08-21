@@ -1,4 +1,8 @@
 # Configuration
 
-# What is a good band size?  A dozen? A typical tournament has 3-5 rounds
-PREFERRED_BAND_SIZE = 1000
+# What is a good band size?  Two dozen people?
+PREFERRED_BAND_SIZE = 20
+
+# Higher numbers increase score-separation between bands
+# Recommended default is 0.75
+BAND_SEPARATION_CONSTANT = 0.75
