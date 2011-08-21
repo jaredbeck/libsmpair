@@ -1,4 +1,4 @@
-require './person_set'
+require './field'
 
 # cmd line args
 if ARGV.length != 2 then
@@ -13,18 +13,17 @@ bar = ARGV[1]
 
 # Bar must be a decimal number
 if !bar.match(/^\-?[0-9]+\.[0-9]+$/) or bar.to_f == 0.0 then
-  puts "Invalid bar.  Bar must be a decimal number.  See usage instructions."
-  exit
+  abort "Invalid bar.  Bar must be a decimal number.  See usage instructions."
 end
 bar = bar.to_f
 
 # read csv player list and construct bands
-ps = PersonSet.read_csv player_list_filepath
-bands = ps.bands(bar)
+field = Field.read_csv player_list_filepath
+bands = field.bands(bar)
 
 # dev. output
-# ps.pretty_print
-puts "#{ps.count} players"
+# field.pretty_print
+puts "#{field.count} players"
 puts "band".ljust(10) + "players".ljust(15) + "initial score"
 bands.each_with_index do |b,i|
   puts i.to_s.ljust(10) + b.count.to_s.ljust(15) + b.score.to_s
