@@ -18,12 +18,15 @@ if !bar.match(/^\-?[0-9]+\.[0-9]+$/) or bar.to_f == 0.0 then
 end
 bar = bar.to_f
 
-# read csv player list
+# read csv player list and construct bands
 ps = PersonSet.read_csv player_list_filepath
+bands = ps.bands(bar)
 
-# get array of people, ordered by descending rating
-person_array = ps.sort.reverse
-
-# get players above the bar, ordered by descending rating
-people_above_bar = ps.select { |p| p.rating > bar }.sort.reverse
-PersonSet.print_person_array people_above_bar
+# dev. output
+# ps.pretty_print
+puts "#{ps.count} players"
+puts "band".ljust(10) + "players".ljust(15) + "initial score"
+bands.each_with_index do |b,i|
+  puts i.to_s.ljust(10) + b.count.to_s.ljust(15) + b.score.to_s
+end
+# bands.last.pretty_print

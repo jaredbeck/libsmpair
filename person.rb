@@ -1,5 +1,5 @@
 class Person
-  attr_accessor :name, :rating
+  attr_accessor :name, :rating, :score
   include Comparable
 
   def <=>(p)
@@ -10,6 +10,10 @@ class Person
     @name = n.to_s
     @rating = r.to_f
     raise_if_not_valid
+  end
+
+  def to_print_s
+    name.ljust(30) + rating.round(2).to_s.ljust(15) + score.to_s
   end
 
   def raise_if_not_valid
