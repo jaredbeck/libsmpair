@@ -1,0 +1,21 @@
+name,rating
+"Robert Connelly",            4
+"Jared Beck",                 3
+"Henry Shu",                  -1
+"Ben Gonnella",               -3
+"Steve Colburn",              -5
+"Peter Wynn",                 -4
+"David Glekel",               -4
+"Richard Moseson",            -4
+"Yuqiao Shen",                -5
+"Jeffrey Lau",                -6
+"Jim Gonnella",               -7
+"Elliot Stern",               -7
+"Sean Reeves",                -8
+"Jesy Feliccia",              -8
+"Leslie Lamphere",           -19
+"Eric Hookway",              -19
+"James Howard",              -19
+"Randall Frank",             -21
+"Nick Jerge",                -30
+"Anastasia Pruitt",          -33
