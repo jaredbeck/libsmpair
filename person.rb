@@ -12,6 +12,14 @@ class Person
     raise_if_not_valid
   end
 
+  def mwpm_weight(other_person)
+    # A higher number makes this pairing less likely
+    # Currently, we just return the abs. diff. between scores,
+    # but other factors are described in Phil's protocol document.
+    raise "Score undefined" if (score.nil? or other_person.score.nil?)
+    (score - other_person.score).abs
+  end
+
   def to_print_s
     name.ljust(30) + rating.round(2).to_s.ljust(15) + score.to_s
   end
