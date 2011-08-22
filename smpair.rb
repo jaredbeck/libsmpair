@@ -1,3 +1,5 @@
+#!/usr/bin/env ruby
+
 require './field'
 require './monkeypatch_core'
 
