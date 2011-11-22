@@ -1,8 +1,9 @@
-### Swiss McMahon Pairing
-by Jared Beck
-
 ### Usage
 Run ruby smpair.rb with no arguments to get usage instructions.
+
+### Documentation
+See `doc/rocco/*.html`, which is generated from Markdown-formatted
+comments in `*.rb`.
 
 ### AGA Pairing Standards
 - http://www.usgo.org/tournaments/TournamentStandards/
