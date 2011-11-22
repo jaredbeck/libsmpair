@@ -25,6 +25,7 @@ field = Field.read_csv player_list_filepath
 bands = field.bands bar, rounds
 
 # dev. output
+puts
 field.pretty_print
 
 # puts "band".ljust(10) + "ratings".ljust(20) + "players".ljust(15) + "initial score"
@@ -37,4 +38,7 @@ field.pretty_print
 stdin, stdout, stderr = Open3.popen3('python lib/mwm/mwm.py')
 field.edges_for_mwpm.each { |e| stdin.puts e }
 stdin.close
+
+puts
+puts "Pairings:"
 puts stdout.gets until stdout.eof?
