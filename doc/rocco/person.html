@@ -39,8 +39,9 @@
       </td>
       <td class=code>
         <div class='highlight'><pre><span class="k">class</span> <span class="nc">Person</span>
-  <span class="kp">attr_accessor</span> <span class="ss">:name</span><span class="p">,</span> <span class="ss">:rating</span><span class="p">,</span> <span class="ss">:score</span>
-  <span class="kp">include</span> <span class="no">Comparable</span></pre></div>
+
+<span class="kp">attr_accessor</span> <span class="ss">:name</span><span class="p">,</span> <span class="ss">:rating</span><span class="p">,</span> <span class="ss">:score</span>
+<span class="kp">include</span> <span class="no">Comparable</span></pre></div>
       </td>
     </tr>
     <tr id='section-Public_methods'>
@@ -53,15 +54,15 @@
       <td class=code>
         <div class='highlight'><pre><span class="kp">public</span>
 
-  <span class="k">def</span> <span class="nf">&lt;=&gt;</span><span class="p">(</span><span class="nb">p</span><span class="p">)</span>
-    <span class="nb">self</span><span class="o">.</span><span class="n">rating</span> <span class="o">&lt;=&gt;</span> <span class="nb">p</span><span class="o">.</span><span class="n">rating</span>
-  <span class="k">end</span>
+<span class="k">def</span> <span class="nf">&lt;=&gt;</span><span class="p">(</span><span class="nb">p</span><span class="p">)</span>
+  <span class="nb">self</span><span class="o">.</span><span class="n">rating</span> <span class="o">&lt;=&gt;</span> <span class="nb">p</span><span class="o">.</span><span class="n">rating</span>
+<span class="k">end</span>
 
-  <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="n">n</span><span class="p">,</span><span class="n">r</span><span class="p">)</span>
-    <span class="vi">@name</span> <span class="o">=</span> <span class="n">n</span><span class="o">.</span><span class="n">to_s</span>
-    <span class="vi">@rating</span> <span class="o">=</span> <span class="n">r</span><span class="o">.</span><span class="n">to_f</span>
-    <span class="n">raise_if_not_valid</span>
-  <span class="k">end</span></pre></div>
+<span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="n">n</span><span class="p">,</span><span class="n">r</span><span class="p">)</span>
+  <span class="vi">@name</span> <span class="o">=</span> <span class="n">n</span><span class="o">.</span><span class="n">to_s</span>
+  <span class="vi">@rating</span> <span class="o">=</span> <span class="n">r</span><span class="o">.</span><span class="n">to_f</span>
+  <span class="n">raise_if_not_valid</span>
+<span class="k">end</span></pre></div>
       </td>
     </tr>
     <tr id='section-3'>
@@ -95,16 +96,16 @@ for the remainder of the field.&rdquo;</p></li>
 <p>The heuristics for weighting have not yet been established.</p>
       </td>
       <td class=code>
-        <div class='highlight'><pre>  <span class="k">def</span> <span class="nf">mwpm_weight</span><span class="p">(</span><span class="n">other_person</span><span class="p">)</span>
-    <span class="k">raise</span> <span class="s2">&quot;Score undefined&quot;</span> <span class="k">if</span> <span class="p">(</span><span class="n">score</span><span class="o">.</span><span class="n">nil?</span> <span class="ow">or</span> <span class="n">other_person</span><span class="o">.</span><span class="n">score</span><span class="o">.</span><span class="n">nil?</span><span class="p">)</span>
-    <span class="n">mm_score_delta</span> <span class="o">=</span> <span class="p">(</span><span class="n">score</span> <span class="o">-</span> <span class="n">other_person</span><span class="o">.</span><span class="n">score</span><span class="p">)</span><span class="o">.</span><span class="n">abs</span>
-    <span class="n">rating_delta</span> <span class="o">=</span> <span class="p">(</span><span class="n">rating</span> <span class="o">-</span> <span class="n">other_person</span><span class="o">.</span><span class="n">rating</span><span class="p">)</span><span class="o">.</span><span class="n">abs</span>
-    <span class="p">((</span><span class="n">mm_score_delta</span> <span class="o">*</span> <span class="mi">100</span><span class="p">)</span> <span class="o">+</span> <span class="n">rating_delta</span><span class="p">)</span><span class="o">.</span><span class="n">to_i</span>
-  <span class="k">end</span>
+        <div class='highlight'><pre><span class="k">def</span> <span class="nf">mwpm_weight</span><span class="p">(</span><span class="n">other_person</span><span class="p">)</span>
+  <span class="k">raise</span> <span class="s2">&quot;Score undefined&quot;</span> <span class="k">if</span> <span class="p">(</span><span class="n">score</span><span class="o">.</span><span class="n">nil?</span> <span class="ow">or</span> <span class="n">other_person</span><span class="o">.</span><span class="n">score</span><span class="o">.</span><span class="n">nil?</span><span class="p">)</span>
+  <span class="n">mm_score_delta</span> <span class="o">=</span> <span class="p">(</span><span class="n">score</span> <span class="o">-</span> <span class="n">other_person</span><span class="o">.</span><span class="n">score</span><span class="p">)</span><span class="o">.</span><span class="n">abs</span>
+  <span class="n">rating_delta</span> <span class="o">=</span> <span class="p">(</span><span class="n">rating</span> <span class="o">-</span> <span class="n">other_person</span><span class="o">.</span><span class="n">rating</span><span class="p">)</span><span class="o">.</span><span class="n">abs</span>
+  <span class="p">((</span><span class="n">mm_score_delta</span> <span class="o">*</span> <span class="mi">100</span><span class="p">)</span> <span class="o">+</span> <span class="n">rating_delta</span><span class="p">)</span><span class="o">.</span><span class="n">to_i</span>
+<span class="k">end</span>
 
-  <span class="k">def</span> <span class="nf">to_print_s</span>
-    <span class="nb">name</span><span class="o">.</span><span class="n">ljust</span><span class="p">(</span><span class="mi">30</span><span class="p">)</span> <span class="o">+</span> <span class="n">rating</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">to_s</span><span class="o">.</span><span class="n">ljust</span><span class="p">(</span><span class="mi">15</span><span class="p">)</span> <span class="o">+</span> <span class="n">score</span><span class="o">.</span><span class="n">to_s</span>
-  <span class="k">end</span></pre></div>
+<span class="k">def</span> <span class="nf">to_print_s</span>
+  <span class="nb">name</span><span class="o">.</span><span class="n">ljust</span><span class="p">(</span><span class="mi">30</span><span class="p">)</span> <span class="o">+</span> <span class="n">rating</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">to_s</span><span class="o">.</span><span class="n">ljust</span><span class="p">(</span><span class="mi">15</span><span class="p">)</span> <span class="o">+</span> <span class="n">score</span><span class="o">.</span><span class="n">to_s</span>
+<span class="k">end</span></pre></div>
       </td>
     </tr>
     <tr id='section-Private_methods'>
@@ -117,10 +118,10 @@ for the remainder of the field.&rdquo;</p></li>
       <td class=code>
         <div class='highlight'><pre><span class="kp">private</span>
 
-  <span class="k">def</span> <span class="nf">raise_if_not_valid</span>
-    <span class="k">raise</span> <span class="s2">&quot;Name is required&quot;</span> <span class="k">if</span> <span class="vi">@name</span><span class="o">.</span><span class="n">nil?</span> <span class="ow">or</span> <span class="vi">@name</span><span class="o">.</span><span class="n">strip</span><span class="o">.</span><span class="n">empty?</span>
-    <span class="k">raise</span> <span class="s2">&quot;Invalid rating&quot;</span> <span class="k">unless</span> <span class="n">valid_rating?</span>
-  <span class="k">end</span></pre></div>
+<span class="k">def</span> <span class="nf">raise_if_not_valid</span>
+  <span class="k">raise</span> <span class="s2">&quot;Name is required&quot;</span> <span class="k">if</span> <span class="vi">@name</span><span class="o">.</span><span class="n">nil?</span> <span class="ow">or</span> <span class="vi">@name</span><span class="o">.</span><span class="n">strip</span><span class="o">.</span><span class="n">empty?</span>
+  <span class="k">raise</span> <span class="s2">&quot;Invalid rating&quot;</span> <span class="k">unless</span> <span class="n">valid_rating?</span>
+<span class="k">end</span></pre></div>
       </td>
     </tr>
     <tr id='section-5'>
@@ -136,9 +137,9 @@ checked, ratings ranged from -49.67667 to 10.24712</p>
 
       </td>
       <td class=code>
-        <div class='highlight'><pre>  <span class="k">def</span> <span class="nf">valid_rating?</span>
-    <span class="o">!</span><span class="vi">@rating</span><span class="o">.</span><span class="n">nil?</span> <span class="ow">and</span> <span class="p">(</span><span class="vi">@rating</span> <span class="o">&lt;=</span> <span class="o">-</span><span class="mi">1</span><span class="o">.</span><span class="mi">0</span> <span class="ow">or</span> <span class="vi">@rating</span> <span class="o">&gt;=</span> <span class="o">+</span><span class="mi">1</span><span class="o">.</span><span class="mi">0</span><span class="p">)</span>
-  <span class="k">end</span>
+        <div class='highlight'><pre><span class="k">def</span> <span class="nf">valid_rating?</span>
+  <span class="o">!</span><span class="vi">@rating</span><span class="o">.</span><span class="n">nil?</span> <span class="ow">and</span> <span class="p">(</span><span class="vi">@rating</span> <span class="o">&lt;=</span> <span class="o">-</span><span class="mi">1</span><span class="o">.</span><span class="mi">0</span> <span class="ow">or</span> <span class="vi">@rating</span> <span class="o">&gt;=</span> <span class="o">+</span><span class="mi">1</span><span class="o">.</span><span class="mi">0</span><span class="p">)</span>
+<span class="k">end</span>
 
 <span class="k">end</span></pre></div>
       </td>
