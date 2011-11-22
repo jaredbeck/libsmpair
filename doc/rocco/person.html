@@ -40,7 +40,18 @@
       <td class=code>
         <div class='highlight'><pre><span class="k">class</span> <span class="nc">Person</span>
   <span class="kp">attr_accessor</span> <span class="ss">:name</span><span class="p">,</span> <span class="ss">:rating</span><span class="p">,</span> <span class="ss">:score</span>
-  <span class="kp">include</span> <span class="no">Comparable</span>
+  <span class="kp">include</span> <span class="no">Comparable</span></pre></div>
+      </td>
+    </tr>
+    <tr id='section-Public_methods'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-Public_methods">&#182;</a>
+        </div>
+        <h3>Public methods</h3>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre><span class="kp">public</span>
 
   <span class="k">def</span> <span class="nf">&lt;=&gt;</span><span class="p">(</span><span class="nb">p</span><span class="p">)</span>
     <span class="nb">self</span><span class="o">.</span><span class="n">rating</span> <span class="o">&lt;=&gt;</span> <span class="nb">p</span><span class="o">.</span><span class="n">rating</span>
@@ -53,15 +64,18 @@
   <span class="k">end</span></pre></div>
       </td>
     </tr>
-    <tr id='section-2'>
+    <tr id='section-3'>
       <td class=docs>
         <div class="pilwrap">
-          <a class="pilcrow" href="#section-2">&#182;</a>
+          <a class="pilcrow" href="#section-3">&#182;</a>
         </div>
         <p><code>mwpm_weight</code> takes an <code>other_person</code> and returns an integer weight
-measuring the quality of the pairing.  We use <code>Minimum Weight Perfect
-Matching</code>, so a higher number indicates lower quality, thus making a
+measuring the quality of the pairing.  We use <em>Minimum Weight Perfect
+Matching</em>, so a higher number indicates lower quality, thus making a
 given pairing less likely.</p>
+
+<p>There are three weighting &ldquo;modes&rdquo;.  Currently, only handicap
+tournaments are implemented.</p>
 
 <ul>
 <li><p><strong>Traditionally</strong>, all games within a band are played without a handicap.
@@ -90,30 +104,42 @@ for the remainder of the field.&rdquo;</p></li>
 
   <span class="k">def</span> <span class="nf">to_print_s</span>
     <span class="nb">name</span><span class="o">.</span><span class="n">ljust</span><span class="p">(</span><span class="mi">30</span><span class="p">)</span> <span class="o">+</span> <span class="n">rating</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">to_s</span><span class="o">.</span><span class="n">ljust</span><span class="p">(</span><span class="mi">15</span><span class="p">)</span> <span class="o">+</span> <span class="n">score</span><span class="o">.</span><span class="n">to_s</span>
-  <span class="k">end</span>
+  <span class="k">end</span></pre></div>
+      </td>
+    </tr>
+    <tr id='section-Private_methods'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-Private_methods">&#182;</a>
+        </div>
+        <h3>Private methods</h3>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre><span class="kp">private</span>
 
   <span class="k">def</span> <span class="nf">raise_if_not_valid</span>
     <span class="k">raise</span> <span class="s2">&quot;Name is required&quot;</span> <span class="k">if</span> <span class="vi">@name</span><span class="o">.</span><span class="n">nil?</span> <span class="ow">or</span> <span class="vi">@name</span><span class="o">.</span><span class="n">strip</span><span class="o">.</span><span class="n">empty?</span>
     <span class="k">raise</span> <span class="s2">&quot;Invalid rating&quot;</span> <span class="k">unless</span> <span class="n">valid_rating?</span>
-  <span class="k">end</span>
-
-  <span class="k">def</span> <span class="nf">valid_rating?</span></pre></div>
+  <span class="k">end</span></pre></div>
       </td>
     </tr>
-    <tr id='section-3'>
+    <tr id='section-5'>
       <td class=docs>
         <div class="pilwrap">
-          <a class="pilcrow" href="#section-3">&#182;</a>
+          <a class="pilcrow" href="#section-5">&#182;</a>
         </div>
-        <p>In the AGA, valid kyu ratings are -1.0 and below, while valid dan 
-ratings are 1.0 and above (including pros). There is no upper or
-lower limit in the AGA database. The current range is -49.67667 
-to 10.24712</p>
+        <p><code>valid_rating?</code> returns true if self.rating is a valid decimal
+AGA rating. In the AGA, valid kyu ratings are -1.0 and below,
+while valid dan ratings are 1.0 and above (including pros). There
+is no upper or lower limit in the AGA database. The last time I
+checked, ratings ranged from -49.67667 to 10.24712</p>
 
       </td>
       <td class=code>
-        <div class='highlight'><pre>    <span class="o">!</span><span class="vi">@rating</span><span class="o">.</span><span class="n">nil?</span> <span class="ow">and</span> <span class="p">(</span><span class="vi">@rating</span> <span class="o">&lt;=</span> <span class="o">-</span><span class="mi">1</span><span class="o">.</span><span class="mi">0</span> <span class="ow">or</span> <span class="vi">@rating</span> <span class="o">&gt;=</span> <span class="o">+</span><span class="mi">1</span><span class="o">.</span><span class="mi">0</span><span class="p">)</span>
+        <div class='highlight'><pre>  <span class="k">def</span> <span class="nf">valid_rating?</span>
+    <span class="o">!</span><span class="vi">@rating</span><span class="o">.</span><span class="n">nil?</span> <span class="ow">and</span> <span class="p">(</span><span class="vi">@rating</span> <span class="o">&lt;=</span> <span class="o">-</span><span class="mi">1</span><span class="o">.</span><span class="mi">0</span> <span class="ow">or</span> <span class="vi">@rating</span> <span class="o">&gt;=</span> <span class="o">+</span><span class="mi">1</span><span class="o">.</span><span class="mi">0</span><span class="p">)</span>
   <span class="k">end</span>
+
 <span class="k">end</span></pre></div>
       </td>
     </tr>

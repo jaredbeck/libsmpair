@@ -2,6 +2,9 @@ class Person
   attr_accessor :name, :rating, :score
   include Comparable
 
+#### Public methods
+public
+
   def <=>(p)
     self.rating <=> p.rating
   end
@@ -13,9 +16,12 @@ class Person
   end
 
   # `mwpm_weight` takes an `other_person` and returns an integer weight
-  # measuring the quality of the pairing.  We use `Minimum Weight Perfect
-  # Matching`, so a higher number indicates lower quality, thus making a
+  # measuring the quality of the pairing.  We use _Minimum Weight Perfect
+  # Matching_, so a higher number indicates lower quality, thus making a
   # given pairing less likely.
+  #
+  # There are three weighting "modes".  Currently, only handicap
+  # tournaments are implemented.
   #
   # * __Traditionally__, all games within a band are played without a handicap.
   #   In such a tournament, the difference between player's _McMahon scores_
@@ -45,16 +51,21 @@ class Person
     name.ljust(30) + rating.round(2).to_s.ljust(15) + score.to_s
   end
 
+#### Private methods
+private
+
   def raise_if_not_valid
     raise "Name is required" if @name.nil? or @name.strip.empty?
     raise "Invalid rating" unless valid_rating?
   end
 
+  # `valid_rating?` returns true if self.rating is a valid decimal
+  # AGA rating. In the AGA, valid kyu ratings are -1.0 and below,
+  # while valid dan ratings are 1.0 and above (including pros). There
+  # is no upper or lower limit in the AGA database. The last time I
+  # checked, ratings ranged from -49.67667 to 10.24712
   def valid_rating?
-    # In the AGA, valid kyu ratings are -1.0 and below, while valid dan 
-    # ratings are 1.0 and above (including pros). There is no upper or
-    # lower limit in the AGA database. The current range is -49.67667 
-    # to 10.24712
     !@rating.nil? and (@rating <= -1.0 or @rating >= +1.0)
   end
+
 end
