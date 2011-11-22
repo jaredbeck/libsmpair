@@ -12,12 +12,33 @@ class Person
     raise_if_not_valid
   end
 
+  # `mwpm_weight` takes an `other_person` and returns an integer weight
+  # measuring the quality of the pairing.  We use `Minimum Weight Perfect
+  # Matching`, so a higher number indicates lower quality, thus making a
+  # given pairing less likely.
+  #
+  # * __Traditionally__, all games within a band are played without a handicap.
+  #   In such a tournament, the difference between player's _McMahon scores_
+  #   would be the most important factor of the weight.  This works well for
+  #   tournaments with large fields.
+  #
+  # * __Handicap tournaments__ are also popular, especially when player’s ranks
+  #   are not distributed uniformly, and there are large gaps in the player’s
+  #   ranks.  In this case, the difference between player's _ratings_ would
+  #   also be a factor (in addition to McMahon scores)
+  #
+  # * __Handicap tournament with even top band__ According to the AGA:
+  #   "Programs must also have the option to ensure that all games involving
+  #   players in the top band are even, regardless of the handicap settings
+  #   for the remainder of the field."
+  #
+  # The heuristics for weighting have not yet been established.
+  #
   def mwpm_weight(other_person)
-    # A higher number makes this pairing less likely
-    # Currently, we just return the abs. diff. between scores,
-    # but other factors are described in Phil's protocol document.
     raise "Score undefined" if (score.nil? or other_person.score.nil?)
-    (score - other_person.score).abs
+    mm_score_delta = (score - other_person.score).abs
+    rating_delta = (rating - other_person.rating).abs
+    ((mm_score_delta * 100) + rating_delta).to_i
   end
 
   def to_print_s
