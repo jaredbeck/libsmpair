@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <title>person_set.rb</title>
+  <link rel="stylesheet" href="http://jashkenas.github.com/docco/resources/docco.css">
+</head>
+<body>
+<div id='container'>
+  <div id="background"></div>
+  <div id="jump_to">
+    Jump To &hellip;
+    <div id="jump_wrapper">
+      <div id="jump_page">
+          <a class="source" href="band.html">band.rb</a>
+          <a class="source" href="config.html">config.rb</a>
+          <a class="source" href="field.html">field.rb</a>
+          <a class="source" href="monkeypatch_core.html">monkeypatch_core.rb</a>
+          <a class="source" href="person.html">person.rb</a>
+          <a class="source" href="person_set.html">person_set.rb</a>
+          <a class="source" href="smpair.html">smpair.rb</a>
+      </div>
+    </div>
+  </div>
+  <table cellspacing=0 cellpadding=0>
+  <thead>
+    <tr>
+      <th class=docs><h1>person_set.rb</h1></th>
+      <th class=code></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr id='section-1'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-1">&#182;</a>
+        </div>
+        
+      </td>
+      <td class=code>
+        <div class='highlight'><pre><span class="k">module</span> <span class="nn">PersonSet</span>
+  <span class="kp">include</span> <span class="no">Enumerable</span>
+
+  <span class="k">def</span> <span class="nf">each</span><span class="p">()</span> <span class="vi">@people</span><span class="o">.</span><span class="n">each</span> <span class="p">{</span> <span class="o">|</span><span class="nb">p</span><span class="o">|</span> <span class="k">yield</span> <span class="nb">p</span> <span class="p">}</span> <span class="k">end</span>
+  <span class="k">def</span> <span class="nf">push</span><span class="p">(</span><span class="nb">p</span><span class="p">)</span> <span class="vi">@people</span><span class="o">.</span><span class="n">push</span> <span class="nb">p</span> <span class="k">end</span>
+  <span class="k">def</span> <span class="nf">size</span><span class="p">()</span> <span class="vi">@people</span><span class="o">.</span><span class="n">length</span> <span class="k">end</span>
+  
+  <span class="k">def</span> <span class="nf">pretty_print</span>
+    <span class="nb">puts</span> <span class="s2">&quot;The Field:&quot;</span>
+    <span class="nb">puts</span> <span class="s2">&quot;#&quot;</span><span class="o">.</span><span class="n">ljust</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;name&quot;</span><span class="o">.</span><span class="n">ljust</span><span class="p">(</span><span class="mi">30</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;rating&quot;</span><span class="o">.</span><span class="n">ljust</span><span class="p">(</span><span class="mi">15</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;mcmahon score&quot;</span>
+    <span class="vi">@people</span><span class="o">.</span><span class="n">sort</span><span class="o">.</span><span class="n">reverse</span><span class="o">.</span><span class="n">each_with_index</span> <span class="p">{</span> <span class="o">|</span><span class="nb">p</span><span class="p">,</span><span class="n">i</span><span class="o">|</span> <span class="nb">puts</span> <span class="n">i</span><span class="o">.</span><span class="n">to_s</span><span class="o">.</span><span class="n">ljust</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span> <span class="o">+</span> <span class="nb">p</span><span class="o">.</span><span class="n">to_print_s</span> <span class="p">}</span>
+    <span class="nb">puts</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="nf">edges_for_mwpm</span>
+    <span class="n">edges</span> <span class="o">=</span> <span class="o">[]</span></pre></div>
+      </td>
+    </tr>
+    <tr id='section-2'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-2">&#182;</a>
+        </div>
+        <p>Given all people in the set sorted by descending score</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre>    <span class="n">ppl</span> <span class="o">=</span> <span class="vi">@people</span><span class="o">.</span><span class="n">sort</span><span class="o">.</span><span class="n">reverse</span></pre></div>
+      </td>
+    </tr>
+    <tr id='section-3'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-3">&#182;</a>
+        </div>
+        <p>Each possible pairing becomes a weighted edge in an undirected graph.
+From this graph, a &ldquo;perfect match&rdquo; of edges with the lowest weights
+will be found.  In other words, pairings with high weights are penalized.</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre>    <span class="n">ppl</span><span class="o">.</span><span class="n">each_with_index</span> <span class="k">do</span> <span class="o">|</span><span class="n">a</span><span class="p">,</span><span class="n">y</span><span class="o">|</span>
+      <span class="n">ppl</span><span class="o">.</span><span class="n">each_with_index</span> <span class="k">do</span> <span class="o">|</span><span class="n">b</span><span class="p">,</span><span class="n">z</span><span class="o">|</span></pre></div>
+      </td>
+    </tr>
+    <tr id='section-4'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-4">&#182;</a>
+        </div>
+        <p>Pairings which have not yet been considered are weighted and
+added to the set of edges.  We also do not consider pairings
+where a person plays themselves!  You cannot play against
+yourself in a tournament :)</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre>        <span class="k">if</span> <span class="n">z</span> <span class="o">&gt;</span> <span class="n">y</span> <span class="k">then</span></pre></div>
+      </td>
+    </tr>
+    <tr id='section-5'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-5">&#182;</a>
+        </div>
+        <p>puts &ldquo;#{y} #{z} #{a.name} (#{a.score}) vs. #{b.name} (#{b.score}) = #{a.mwpm<em>weight(b).to</em>s}&rdquo;</p>
+
+      </td>
+      <td class=code>
+        <div class='highlight'><pre>          <span class="n">edges</span><span class="o">.</span><span class="n">push</span><span class="p">(</span> <span class="s2">&quot;</span><span class="si">#{</span><span class="n">y</span><span class="si">}</span><span class="s2"> </span><span class="si">#{</span><span class="n">z</span><span class="si">}</span><span class="s2"> </span><span class="si">#{</span><span class="n">a</span><span class="o">.</span><span class="n">mwpm_weight</span><span class="p">(</span><span class="n">b</span><span class="p">)</span><span class="o">.</span><span class="n">to_s</span><span class="si">}</span><span class="s2">&quot;</span> <span class="p">)</span>
+        <span class="k">end</span>
+      <span class="k">end</span>
+    <span class="k">end</span>
+
+    <span class="n">edges</span>
+  <span class="k">end</span>
+  
+  <span class="k">def</span> <span class="nf">rating_gt</span><span class="p">(</span><span class="n">bar</span><span class="p">)</span> <span class="vi">@people</span><span class="o">.</span><span class="n">select</span> <span class="p">{</span> <span class="o">|</span><span class="nb">p</span><span class="o">|</span> <span class="nb">p</span><span class="o">.</span><span class="n">rating</span> <span class="o">&gt;</span> <span class="n">bar</span> <span class="p">}</span> <span class="k">end</span>
+  <span class="k">def</span> <span class="nf">rating_lte</span><span class="p">(</span><span class="n">bar</span><span class="p">)</span> <span class="vi">@people</span><span class="o">.</span><span class="n">select</span> <span class="p">{</span> <span class="o">|</span><span class="nb">p</span><span class="o">|</span> <span class="nb">p</span><span class="o">.</span><span class="n">rating</span> <span class="o">&lt;=</span> <span class="n">bar</span> <span class="p">}</span> <span class="k">end</span>
+<span class="k">end</span></pre></div>
+      </td>
+    </tr>
+  </table>
+</div>
+</body>

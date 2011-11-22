@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <title>person.rb</title>
+  <link rel="stylesheet" href="http://jashkenas.github.com/docco/resources/docco.css">
+</head>
+<body>
+<div id='container'>
+  <div id="background"></div>
+  <div id="jump_to">
+    Jump To &hellip;
+    <div id="jump_wrapper">
+      <div id="jump_page">
+          <a class="source" href="band.html">band.rb</a>
+          <a class="source" href="config.html">config.rb</a>
+          <a class="source" href="field.html">field.rb</a>
+          <a class="source" href="monkeypatch_core.html">monkeypatch_core.rb</a>
+          <a class="source" href="person.html">person.rb</a>
+          <a class="source" href="person_set.html">person_set.rb</a>
+          <a class="source" href="smpair.html">smpair.rb</a>
+      </div>
+    </div>
+  </div>
+  <table cellspacing=0 cellpadding=0>
+  <thead>
+    <tr>
+      <th class=docs><h1>person.rb</h1></th>
+      <th class=code></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr id='section-1'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-1">&#182;</a>
+        </div>
+        
+      </td>
+      <td class=code>
+        <div class='highlight'><pre><span class="k">class</span> <span class="nc">Person</span>
+  <span class="kp">attr_accessor</span> <span class="ss">:name</span><span class="p">,</span> <span class="ss">:rating</span><span class="p">,</span> <span class="ss">:score</span>
+  <span class="kp">include</span> <span class="no">Comparable</span>
+
+  <span class="k">def</span> <span class="nf">&lt;=&gt;</span><span class="p">(</span><span class="nb">p</span><span class="p">)</span>
+    <span class="nb">self</span><span class="o">.</span><span class="n">rating</span> <span class="o">&lt;=&gt;</span> <span class="nb">p</span><span class="o">.</span><span class="n">rating</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="n">n</span><span class="p">,</span><span class="n">r</span><span class="p">)</span>
+    <span class="vi">@name</span> <span class="o">=</span> <span class="n">n</span><span class="o">.</span><span class="n">to_s</span>
+    <span class="vi">@rating</span> <span class="o">=</span> <span class="n">r</span><span class="o">.</span><span class="n">to_f</span>
+    <span class="n">raise_if_not_valid</span>
+  <span class="k">end</span></pre></div>
+      </td>
+    </tr>
+    <tr id='section-2'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-2">&#182;</a>
+        </div>
+        <p><code>mwpm_weight</code> takes an <code>other_person</code> and returns an integer weight
+measuring the quality of the pairing.  We use <code>Minimum Weight Perfect
+Matching</code>, so a higher number indicates lower quality, thus making a
+given pairing less likely.</p>
+
+<ul>
+<li><p><strong>Traditionally</strong>, all games within a band are played without a handicap.
+In such a tournament, the difference between player&rsquo;s <em>McMahon scores</em>
+would be the most important factor of the weight.  This works well for
+tournaments with large fields.</p></li>
+<li><p><strong>Handicap tournaments</strong> are also popular, especially when player’s ranks
+are not distributed uniformly, and there are large gaps in the player’s
+ranks.  In this case, the difference between player&rsquo;s <em>ratings</em> would
+also be a factor (in addition to McMahon scores)</p></li>
+<li><p><strong>Handicap tournament with even top band</strong> According to the AGA:
+&ldquo;Programs must also have the option to ensure that all games involving
+players in the top band are even, regardless of the handicap settings
+for the remainder of the field.&rdquo;</p></li>
+</ul>
+
+<p>The heuristics for weighting have not yet been established.</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre>  <span class="k">def</span> <span class="nf">mwpm_weight</span><span class="p">(</span><span class="n">other_person</span><span class="p">)</span>
+    <span class="k">raise</span> <span class="s2">&quot;Score undefined&quot;</span> <span class="k">if</span> <span class="p">(</span><span class="n">score</span><span class="o">.</span><span class="n">nil?</span> <span class="ow">or</span> <span class="n">other_person</span><span class="o">.</span><span class="n">score</span><span class="o">.</span><span class="n">nil?</span><span class="p">)</span>
+    <span class="n">mm_score_delta</span> <span class="o">=</span> <span class="p">(</span><span class="n">score</span> <span class="o">-</span> <span class="n">other_person</span><span class="o">.</span><span class="n">score</span><span class="p">)</span><span class="o">.</span><span class="n">abs</span>
+    <span class="n">rating_delta</span> <span class="o">=</span> <span class="p">(</span><span class="n">rating</span> <span class="o">-</span> <span class="n">other_person</span><span class="o">.</span><span class="n">rating</span><span class="p">)</span><span class="o">.</span><span class="n">abs</span>
+    <span class="p">((</span><span class="n">mm_score_delta</span> <span class="o">*</span> <span class="mi">100</span><span class="p">)</span> <span class="o">+</span> <span class="n">rating_delta</span><span class="p">)</span><span class="o">.</span><span class="n">to_i</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="nf">to_print_s</span>
+    <span class="nb">name</span><span class="o">.</span><span class="n">ljust</span><span class="p">(</span><span class="mi">30</span><span class="p">)</span> <span class="o">+</span> <span class="n">rating</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">to_s</span><span class="o">.</span><span class="n">ljust</span><span class="p">(</span><span class="mi">15</span><span class="p">)</span> <span class="o">+</span> <span class="n">score</span><span class="o">.</span><span class="n">to_s</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="nf">raise_if_not_valid</span>
+    <span class="k">raise</span> <span class="s2">&quot;Name is required&quot;</span> <span class="k">if</span> <span class="vi">@name</span><span class="o">.</span><span class="n">nil?</span> <span class="ow">or</span> <span class="vi">@name</span><span class="o">.</span><span class="n">strip</span><span class="o">.</span><span class="n">empty?</span>
+    <span class="k">raise</span> <span class="s2">&quot;Invalid rating&quot;</span> <span class="k">unless</span> <span class="n">valid_rating?</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="nf">valid_rating?</span></pre></div>
+      </td>
+    </tr>
+    <tr id='section-3'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-3">&#182;</a>
+        </div>
+        <p>In the AGA, valid kyu ratings are -1.0 and below, while valid dan 
+ratings are 1.0 and above (including pros). There is no upper or
+lower limit in the AGA database. The current range is -49.67667 
+to 10.24712</p>
+
+      </td>
+      <td class=code>
+        <div class='highlight'><pre>    <span class="o">!</span><span class="vi">@rating</span><span class="o">.</span><span class="n">nil?</span> <span class="ow">and</span> <span class="p">(</span><span class="vi">@rating</span> <span class="o">&lt;=</span> <span class="o">-</span><span class="mi">1</span><span class="o">.</span><span class="mi">0</span> <span class="ow">or</span> <span class="vi">@rating</span> <span class="o">&gt;=</span> <span class="o">+</span><span class="mi">1</span><span class="o">.</span><span class="mi">0</span><span class="p">)</span>
+  <span class="k">end</span>
+<span class="k">end</span></pre></div>
+      </td>
+    </tr>
+  </table>
+</div>
+</body>

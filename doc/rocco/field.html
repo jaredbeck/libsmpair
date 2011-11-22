@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <title>field.rb</title>
+  <link rel="stylesheet" href="http://jashkenas.github.com/docco/resources/docco.css">
+</head>
+<body>
+<div id='container'>
+  <div id="background"></div>
+  <div id="jump_to">
+    Jump To &hellip;
+    <div id="jump_wrapper">
+      <div id="jump_page">
+          <a class="source" href="band.html">band.rb</a>
+          <a class="source" href="config.html">config.rb</a>
+          <a class="source" href="field.html">field.rb</a>
+          <a class="source" href="monkeypatch_core.html">monkeypatch_core.rb</a>
+          <a class="source" href="person.html">person.rb</a>
+          <a class="source" href="person_set.html">person_set.rb</a>
+          <a class="source" href="smpair.html">smpair.rb</a>
+      </div>
+    </div>
+  </div>
+  <table cellspacing=0 cellpadding=0>
+  <thead>
+    <tr>
+      <th class=docs><h1>field.rb</h1></th>
+      <th class=code></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr id='section-1'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-1">&#182;</a>
+        </div>
+        
+      </td>
+      <td class=code>
+        <div class='highlight'><pre><span class="nb">require</span> <span class="s1">&#39;CSV&#39;</span>
+<span class="nb">require</span> <span class="s1">&#39;./band&#39;</span>
+<span class="nb">require</span> <span class="s1">&#39;./config&#39;</span>
+<span class="nb">require</span> <span class="s1">&#39;./person&#39;</span>
+<span class="nb">require</span> <span class="s1">&#39;./person_set&#39;</span></pre></div>
+      </td>
+    </tr>
+    <tr id='section-2'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-2">&#182;</a>
+        </div>
+        <p>The Field is a collection of all players in the tournament</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre><span class="k">class</span> <span class="nc">Field</span>  
+  <span class="kp">include</span> <span class="no">PersonSet</span>
+
+  <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">read_csv</span><span class="p">(</span><span class="n">filepath</span><span class="p">)</span>
+    <span class="n">c</span> <span class="o">=</span> <span class="no">CSV</span><span class="o">.</span><span class="n">open</span> <span class="n">filepath</span><span class="p">,</span> <span class="ss">:headers</span> <span class="o">=&gt;</span> <span class="kp">true</span> <span class="k">rescue</span>
+      <span class="nb">abort</span> <span class="s2">&quot;Unable to open file: &quot;</span> <span class="o">+</span> <span class="vg">$!</span><span class="o">.</span><span class="n">to_s</span>
+    <span class="n">f</span> <span class="o">=</span> <span class="kp">new</span>
+    <span class="n">c</span><span class="o">.</span><span class="n">each_with_index</span> <span class="k">do</span> <span class="o">|</span><span class="n">r</span><span class="p">,</span><span class="n">i</span><span class="o">|</span>
+      <span class="n">f</span><span class="o">.</span><span class="n">push</span> <span class="no">Person</span><span class="o">.</span><span class="n">new</span> <span class="n">r</span><span class="o">[</span><span class="s1">&#39;name&#39;</span><span class="o">]</span><span class="p">,</span> <span class="n">r</span><span class="o">[</span><span class="s1">&#39;rating&#39;</span><span class="o">]</span> <span class="k">rescue</span>
+        <span class="nb">abort</span> <span class="s2">&quot;Invalid player record on line </span><span class="si">#{</span><span class="n">i</span><span class="o">+</span><span class="mi">2</span><span class="si">}</span><span class="s2">: &quot;</span> <span class="o">+</span> <span class="vg">$!</span><span class="o">.</span><span class="n">to_s</span>
+    <span class="k">end</span>
+    <span class="k">return</span> <span class="n">f</span>
+  <span class="k">end</span>
+  
+  <span class="k">def</span> <span class="nf">bands</span><span class="p">(</span><span class="n">bar</span><span class="p">,</span> <span class="n">rounds</span><span class="p">)</span>
+    <span class="n">bands</span> <span class="o">=</span> <span class="o">[</span><span class="no">Band</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">rating_gt</span><span class="p">(</span><span class="n">bar</span><span class="p">))</span><span class="o">]</span> <span class="c1"># first band contains players above bar</span>
+    <span class="n">people</span> <span class="o">=</span> <span class="n">rating_lte</span><span class="p">(</span><span class="n">bar</span><span class="p">)</span><span class="o">.</span><span class="n">sort</span><span class="o">.</span><span class="n">reverse</span>
+    <span class="k">while</span> <span class="n">people</span><span class="o">.</span><span class="n">length</span> <span class="o">&gt;</span> <span class="mi">0</span>
+      <span class="n">band_people</span> <span class="o">=</span> <span class="n">people</span><span class="o">.</span><span class="n">slice!</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="no">PREFERRED_BAND_SIZE</span><span class="p">)</span>
+      <span class="n">score</span> <span class="o">=</span> <span class="n">bands</span><span class="o">.</span><span class="n">last</span><span class="o">.</span><span class="n">score</span> <span class="o">-</span> <span class="n">band_separation</span><span class="p">(</span><span class="n">band_people</span><span class="o">.</span><span class="n">length</span><span class="p">,</span> <span class="n">rounds</span><span class="p">)</span>
+      <span class="n">bands</span><span class="o">.</span><span class="n">push</span> <span class="no">Band</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">score</span><span class="p">,</span> <span class="n">band_people</span><span class="p">)</span>
+    <span class="k">end</span>
+    <span class="k">return</span> <span class="n">bands</span>
+  <span class="k">end</span>
+  
+  <span class="k">def</span> <span class="nf">band_separation</span><span class="p">(</span><span class="nb">p</span><span class="p">,</span> <span class="n">r</span><span class="p">)</span></pre></div>
+      </td>
+    </tr>
+    <tr id='section-3'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-3">&#182;</a>
+        </div>
+        <p>The usual separation between bands is one McMahon point, but this is increased
+when a band contains a large number of players. The separation between a given
+band and the next higher one is given by integer part of S = D * P / R where S
+is the band separation, P is the number of players in the band, R is the
+number of rounds in a tournament and D is a parameter. The value of D
+defaults to 0.75 but may be adjusted by the TD provided it does not conflict
+with the limitations on the value of S (see below)</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre>    <span class="n">sep</span> <span class="o">=</span> <span class="no">BAND_SEPARATION_CONSTANT</span><span class="o">.</span><span class="n">to_f</span> <span class="o">*</span> <span class="nb">p</span> <span class="o">/</span> <span class="n">r</span><span class="o">.</span><span class="n">to_i</span>
+    </pre></div>
+      </td>
+    </tr>
+    <tr id='section-4'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-4">&#182;</a>
+        </div>
+        <p>The value of S ranges between a minimum of 1 and a maximum of R/3, rounded up</p>
+
+      </td>
+      <td class=code>
+        <div class='highlight'><pre>    <span class="n">max_sep</span> <span class="o">=</span> <span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">to_f</span> <span class="o">/</span> <span class="mi">3</span><span class="o">.</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">ceil</span>
+    <span class="n">sep</span> <span class="o">=</span> <span class="o">[</span><span class="n">sep</span><span class="p">,</span> <span class="n">max_sep</span><span class="o">].</span><span class="n">min</span>
+    <span class="n">sep</span> <span class="o">=</span> <span class="o">[</span><span class="n">sep</span><span class="p">,</span> <span class="mi">1</span><span class="o">.</span><span class="mi">0</span><span class="o">].</span><span class="n">max</span>
+    
+    <span class="n">sep</span><span class="o">.</span><span class="n">to_i</span> 
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="nf">initialize</span><span class="p">()</span> <span class="vi">@people</span> <span class="o">=</span> <span class="o">[]</span> <span class="k">end</span>
+<span class="k">end</span></pre></div>
+      </td>
+    </tr>
+  </table>
+</div>
+</body>
