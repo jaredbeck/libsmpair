@@ -1,4 +1,4 @@
-require './field'
+require 'spec_helper'
 
 PLAYER_LIST_DIR = "spec/input/players"
 

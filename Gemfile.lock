@@ -1,3 +1,8 @@
+PATH
+  remote: .
+  specs:
+    smpair (0.0.1)
+
 GEM
   remote: http://rubygems.org/
   specs:
@@ -24,3 +29,4 @@ DEPENDENCIES
   rake
   rocco
   rspec
+  smpair!

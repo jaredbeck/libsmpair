@@ -1,4 +1,4 @@
-require './person_set'
+require 'smpair/person_set'
 
 class Band
   attr_accessor :score

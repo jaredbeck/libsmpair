@@ -1,3 +1,4 @@
+require "bundler/gem_tasks"
 require 'rspec/core/rake_task'
 
 RSpec::Core::RakeTask.new(:spec)
@@ -9,7 +10,7 @@ task :default => :spec
 # http://rtomayko.github.com/rocco/tasks.html
 begin
   require 'rocco/tasks'
-  Rocco::make 'doc/rocco/', '*.rb'
+  Rocco::make 'doc/rocco/', ['lib/smpair.rb', 'lib/smpair/**/*.rb']
 rescue LoadError
   warn "#$! -- rocco tasks not loaded."
   task :rocco

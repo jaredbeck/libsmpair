@@ -1,3 +1,7 @@
+### smpair
+Still in early development, `smpair` is a library that will implement
+Swiss McMahon Pairing using Minimum Weight Perfect Matching.
+
 ### Usage
 Run ruby smpair.rb with no arguments to get usage instructions.
 

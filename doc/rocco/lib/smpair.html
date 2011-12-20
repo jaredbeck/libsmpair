@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <title>smpair.rb</title>
+  <link rel="stylesheet" href="http://jashkenas.github.com/docco/resources/docco.css">
+</head>
+<body>
+<div id='container'>
+  <div id="background"></div>
+  <div id="jump_to">
+    Jump To &hellip;
+    <div id="jump_wrapper">
+      <div id="jump_page">
+          <a class="source" href="smpair.html">smpair.rb</a>
+          <a class="source" href="smpair/band.html">band.rb</a>
+          <a class="source" href="smpair/config.html">config.rb</a>
+          <a class="source" href="smpair/field.html">field.rb</a>
+          <a class="source" href="smpair/monkeypatch_core.html">monkeypatch_core.rb</a>
+          <a class="source" href="smpair/person.html">person.rb</a>
+          <a class="source" href="smpair/person_set.html">person_set.rb</a>
+          <a class="source" href="smpair/version.html">version.rb</a>
+      </div>
+    </div>
+  </div>
+  <table cellspacing=0 cellpadding=0>
+  <thead>
+    <tr>
+      <th class=docs><h1>smpair.rb</h1></th>
+      <th class=code></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr id='section-1'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-1">&#182;</a>
+        </div>
+        <p>The main file to define our gem&rsquo;s code. This is the file that will be
+required by Bundler (or any similarly smart system) when our gem is loaded.
+This file defines a module which we can use as a namespace for all our gem&rsquo;s
+code. It&rsquo;s best practice to put our code in&hellip;</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre><span class="nb">require</span> <span class="s2">&quot;open3&quot;</span>
+<span class="nb">require</span> <span class="s1">&#39;smpair/version&#39;</span>
+<span class="nb">require</span> <span class="s1">&#39;smpair/field&#39;</span>
+<span class="nb">require</span> <span class="s1">&#39;smpair/monkeypatch_core&#39;</span>
+
+<span class="k">module</span> <span class="nn">Smpair</span>
+  <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">pair</span><span class="p">(</span><span class="n">player_list_filepath</span><span class="p">,</span> <span class="n">bar</span><span class="p">,</span> <span class="n">rounds</span><span class="p">)</span>
+    </pre></div>
+      </td>
+    </tr>
+    <tr id='section-2'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-2">&#182;</a>
+        </div>
+        <p>read csv player list and construct bands</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre>    <span class="n">field</span> <span class="o">=</span> <span class="no">Field</span><span class="o">.</span><span class="n">read_csv</span> <span class="n">player_list_filepath</span>
+    <span class="n">bands</span> <span class="o">=</span> <span class="n">field</span><span class="o">.</span><span class="n">bands</span> <span class="n">bar</span><span class="p">,</span> <span class="n">rounds</span></pre></div>
+      </td>
+    </tr>
+    <tr id='section-3'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-3">&#182;</a>
+        </div>
+        <p>dev. output</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre>    <span class="nb">puts</span>
+    <span class="n">field</span><span class="o">.</span><span class="n">pretty_print</span></pre></div>
+      </td>
+    </tr>
+    <tr id='section-4'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-4">&#182;</a>
+        </div>
+        <p>puts &ldquo;band&rdquo;.ljust(10) + &ldquo;ratings&rdquo;.ljust(20) + &ldquo;players&rdquo;.ljust(15) + &ldquo;initial score&rdquo;
+bands.each<em>with</em>index do |b,i|
+  rating<em>range = b.max.rating.round(2).to</em>s + &ldquo; to &rdquo; + b.min.rating.round(2).to<em>s
+  puts i.to</em>s.ljust(10) + rating<em>range.ljust(20) + b.count.to</em>s.ljust(15) + b.score.to_s
+end</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre></pre></div>
+      </td>
+    </tr>
+    <tr id='section-5'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-5">&#182;</a>
+        </div>
+        <p>MWPM &ndash; Minimum Weight Perfect Match</p>
+
+      </td>
+      <td class=code>
+        <div class='highlight'><pre>    <span class="n">stdin</span><span class="p">,</span> <span class="n">stdout</span><span class="p">,</span> <span class="n">stderr</span> <span class="o">=</span> <span class="no">Open3</span><span class="o">.</span><span class="n">popen3</span><span class="p">(</span><span class="s1">&#39;python lib/mwm/mwm.py&#39;</span><span class="p">)</span>
+    <span class="n">field</span><span class="o">.</span><span class="n">edges_for_mwpm</span><span class="o">.</span><span class="n">each</span> <span class="p">{</span> <span class="o">|</span><span class="n">e</span><span class="o">|</span> <span class="n">stdin</span><span class="o">.</span><span class="n">puts</span> <span class="n">e</span> <span class="p">}</span>
+    <span class="n">stdin</span><span class="o">.</span><span class="n">close</span>
+
+    <span class="nb">puts</span>
+    <span class="nb">puts</span> <span class="s2">&quot;Pairings:&quot;</span>
+    <span class="nb">puts</span> <span class="n">stdout</span><span class="o">.</span><span class="n">gets</span> <span class="k">until</span> <span class="n">stdout</span><span class="o">.</span><span class="n">eof?</span>
+  <span class="k">end</span>
+<span class="k">end</span></pre></div>
+      </td>
+    </tr>
+  </table>
+</div>
+</body>

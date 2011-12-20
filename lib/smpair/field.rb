@@ -1,8 +1,8 @@
 require 'CSV'
-require './band'
-require './config'
-require './person'
-require './person_set'
+require 'smpair/band'
+require 'smpair/config'
+require 'smpair/person'
+require 'smpair/person_set'
 
 # The Field is a collection of all players in the tournament
 class Field  
