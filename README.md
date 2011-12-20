@@ -9,3 +9,6 @@ comments in `*.rb`.
 - http://www.usgo.org/tournaments/TournamentStandards/
 - AGA Swiss McMahon Pairing Protocol Standards
 - Program Interface and Reporting Requirements
+
+### Development
+https://www.pivotaltracker.com/projects/438115
