@@ -6,7 +6,7 @@ module PersonSet
   def size() @people.length end
   
   def pretty_print
-    puts "The Field:"
+    puts "\nThe Field:"
     puts "#".ljust(4) + "name".ljust(30) + "rating".ljust(15) + "mcmahon score"
     @people.sort.reverse.each_with_index { |p,i| puts i.to_s.ljust(4) + p.to_print_s }
     puts
