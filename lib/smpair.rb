@@ -1,6 +1,5 @@
 # AGA Swiss McMahon Pairing
 
-require "open3"
 require 'smpair/version'
 require 'smpair/field'
 

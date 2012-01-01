@@ -31,6 +31,78 @@
     </tr>
   </thead>
   <tbody>
+    <tr id='section-1'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-1">&#182;</a>
+        </div>
+        
+      </td>
+      <td class=code>
+        <div class='highlight'><pre><span class="nb">require</span> <span class="s2">&quot;open3&quot;</span></pre></div>
+      </td>
+    </tr>
+    <tr id='section-2'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-2">&#182;</a>
+        </div>
+        <p>MWM defines an interface to Joris van Rantwijk&rsquo;s python implementation
+of Maximum Weighted Matching
+http://jorisvr.nl/maximummatching.html</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre><span class="k">class</span> <span class="nc">MWM</span></pre></div>
+      </td>
+    </tr>
+    <tr id='section-3'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-3">&#182;</a>
+        </div>
+        <p><code>matching</code> runs <code>mwm.py</code> in an external process and parses stdout
+into an array of pairings.</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre>  <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">matching</span><span class="p">(</span><span class="n">edges</span><span class="p">)</span>
+    <span class="n">pairings</span> <span class="o">=</span> <span class="kp">nil</span></pre></div>
+      </td>
+    </tr>
+    <tr id='section-4'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-4">&#182;</a>
+        </div>
+        <p><code>popen3</code> will implicitly close the streams when the block exits.
+We must explicitly close stdin, however, or else mwm.py would
+listen forever!</p>
+
+      </td>
+      <td class=code>
+        <div class='highlight'><pre>    <span class="no">Open3</span><span class="o">.</span><span class="n">popen3</span><span class="p">(</span><span class="s1">&#39;python lib/mwm/mwm.py&#39;</span><span class="p">)</span> <span class="p">{</span><span class="o">|</span><span class="n">stdin</span><span class="p">,</span> <span class="n">stdout</span><span class="p">,</span> <span class="n">stderr</span><span class="o">|</span>
+      <span class="n">write_array_then_close_stream</span><span class="p">(</span><span class="n">edges</span><span class="p">,</span> <span class="n">stdin</span><span class="p">)</span>
+      <span class="n">pairings</span> <span class="o">=</span> <span class="n">read_stream_as_array</span><span class="p">(</span><span class="n">stdout</span><span class="p">)</span><span class="o">.</span><span class="n">map</span><span class="p">{</span><span class="o">|</span><span class="n">line</span><span class="o">|</span> <span class="n">parse_mwm_line</span><span class="p">(</span><span class="n">line</span><span class="p">)}</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">pairings</span>
+  <span class="k">end</span>
+  
+  <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">parse_mwm_line</span><span class="p">(</span><span class="n">l</span><span class="p">)</span>
+    <span class="n">l</span><span class="o">.</span><span class="n">chomp</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">)</span><span class="o">.</span><span class="n">map</span><span class="p">{</span><span class="o">|</span><span class="n">x</span><span class="o">|</span> <span class="n">x</span><span class="o">.</span><span class="n">to_i</span><span class="p">}</span>
+  <span class="k">end</span>
+  
+  <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">read_stream_as_array</span><span class="p">(</span><span class="n">stream</span><span class="p">)</span>
+    <span class="n">a</span> <span class="o">=</span> <span class="o">[]</span>
+    <span class="n">stream</span><span class="o">.</span><span class="n">each_line</span><span class="p">{</span><span class="o">|</span><span class="n">line</span><span class="o">|</span> <span class="n">a</span> <span class="o">&lt;&lt;</span> <span class="n">line</span><span class="p">}</span>
+    <span class="k">return</span> <span class="n">a</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">write_array_then_close_stream</span><span class="p">(</span><span class="n">array</span><span class="p">,</span> <span class="n">stream</span><span class="p">)</span>
+    <span class="n">array</span><span class="o">.</span><span class="n">each</span><span class="p">{</span><span class="o">|</span><span class="n">e</span><span class="o">|</span> <span class="n">stream</span><span class="o">.</span><span class="n">puts</span><span class="p">(</span><span class="n">e</span><span class="p">)}</span>
+    <span class="n">stream</span><span class="o">.</span><span class="n">close</span>
+  <span class="k">end</span>
+<span class="k">end</span></pre></div>
+      </td>
+    </tr>
   </table>
 </div>
 </body>
