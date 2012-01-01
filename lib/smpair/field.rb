@@ -42,7 +42,7 @@ class Field
   end
 
   def initialize(players)
-    @people = players.map {|p| Person.new p[:name], p[:rating]}
+    @people = players.map {|p| Person.new p}
   end
 
   def matching

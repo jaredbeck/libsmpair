@@ -6,13 +6,16 @@ require 'smpair/exceptions'
 
 module Smpair
 
-  # `pair` takes a set of `players`, a decimal `bar`, and an integer number
+  # `pair` takes an array of `players`, a `bar`, and a number
   # of `rounds`.  It returns an array of pairings.  Each paring is an
   # array with two elements: the identifiers of the paired players.
   #
-  # * `players` is an array of hashes
+  # * `players` is an array of hashes (see below)
   # * `bar` is a decimal rating threshold defining the top band
   # * `rounds` is the total number of rounds in the tournament
+  #
+  # The hashes in the `players` array should have certain keys.
+  # See Person::initialize for more details.
   #
   def self.pair(players, bar, rounds)
     validate_argument players.respond_to?(:each), "Players must be ennumerable"
@@ -39,7 +42,6 @@ module Smpair
 
   private
 
-  # `assert_valid_argument` provides a nice shorthand
   def self.validate_argument(success, message)
     raise SmpairArgumentError, message unless success
   end

@@ -10,9 +10,9 @@ def <=>(p)
   self.rating <=> p.rating
 end
 
-def initialize(n,r)
-  @name = n.to_s
-  @rating = r.to_f
+def initialize(hsh)
+  @name = hsh[:name].to_s
+  @rating = hsh[:rating].to_f
   raise SmpairInvalidPlayerError, "Name is required" if @name.nil? or @name.strip.empty?
   raise SmpairInvalidPlayerError, "Invalid rating" unless valid_rating?
 end
