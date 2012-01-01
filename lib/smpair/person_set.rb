@@ -2,6 +2,7 @@ module PersonSet
   include Enumerable
 
   def each() @people.each { |p| yield p } end
+  def empty?() @people.empty? end
   def push(p) @people.push p end
   def size() @people.length end
   
