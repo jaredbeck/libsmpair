@@ -3,7 +3,6 @@
 require "open3"
 require 'smpair/version'
 require 'smpair/field'
-require 'smpair/monkeypatch_core'
 
 module Smpair
   def self.pair(player_list_filepath, bar, rounds)
@@ -12,15 +11,12 @@ module Smpair
     abort "Bar must be a decimal number." unless bar.respond_to?(:to_f)
     abort "Rounds must be an integer." unless rounds.respond_to?(:to_i)
     
-    # read csv player list and construct bands
+    # read csv player list
     field = Field.read_csv player_list_filepath
+    field.pretty_print # dev. output
+
+    # construct bands
     bands = field.bands bar, rounds
-
-    # dev. output: the field
-    puts
-    field.pretty_print
-
-    # dev. output: the bands
     puts "band".ljust(10) + "ratings".ljust(20) + "players".ljust(15) + "initial score"
     bands.each_with_index do |b,i|
       rating_range = b.max.rating.round(2).to_s + " to " + b.min.rating.round(2).to_s
