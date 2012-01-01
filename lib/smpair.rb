@@ -24,6 +24,7 @@ module Smpair
     end
 
     # MWPM - Minimum Weight Perfect Match
-    puts "\nPairings:", field.matching.inspect
+    puts "\nPairings:"
+    field.matching.each{|edge| puts edge[0].to_s.ljust(5) + edge[1].to_s.ljust(5)}
   end
 end
