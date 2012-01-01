@@ -1,5 +1,6 @@
 # AGA Swiss McMahon Pairing
 
+require 'smpair/config'
 require 'smpair/version'
 require 'smpair/field'
 require 'smpair/exceptions'
@@ -22,19 +23,18 @@ module Smpair
     validate_argument bar.respond_to?(:to_f), "Bar must be a decimal number"
     validate_argument rounds.respond_to?(:to_i), "Rounds must be an integer"
 
-    # build field from players array
+    # build field from players array and construct bands
     field = Field.new players
-
-    # dev. output
-    field.pretty_print 
-
-    # construct bands
     bands = field.bands bar, rounds
-    puts "band".ljust(10) + "ratings".ljust(20) + "players".ljust(15) + "initial score"
-    bands.each_with_index do |b,i|
-      unless b.empty? then
-        rating_range = b.max.rating.round(2).to_s + " to " + b.min.rating.round(2).to_s
-        puts i.to_s.ljust(10) + rating_range.ljust(20) + b.count.to_s.ljust(15) + b.score.to_s
+
+    if DEBUG_OUTPUT
+      field.pretty_print
+      puts "band".ljust(10) + "ratings".ljust(20) + "players".ljust(15) + "initial score"
+      bands.each_with_index do |b,i|
+        unless b.empty? then
+          rating_range = b.max.rating.round(2).to_s + " to " + b.min.rating.round(2).to_s
+          puts i.to_s.ljust(10) + rating_range.ljust(20) + b.count.to_s.ljust(15) + b.score.to_s
+        end
       end
     end
 

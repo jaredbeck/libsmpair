@@ -1,6 +1,5 @@
 require 'CSV'
 require 'smpair/band'
-require 'smpair/config'
 require 'smpair/person'
 require 'smpair/person_set'
 require 'smpair/mwm'

@@ -1,4 +1,5 @@
 # Configuration
+DEBUG_OUTPUT = false
 
 # What is a good band size?  Two dozen people?
 PREFERRED_BAND_SIZE = 20
