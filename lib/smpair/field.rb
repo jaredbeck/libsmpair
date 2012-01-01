@@ -19,8 +19,11 @@ class Field
     return f
   end
   
+  # `bands` returns an array of bands based on the provided `bar`
+  # and number of `rounds`.  The first band contains players above 
+  # the `bar`.
   def bands(bar, rounds)
-    bands = [Band.new(0, rating_gt(bar))] # first band contains players above bar
+    bands = [Band.new(0, rating_gt(bar))]
     people = rating_lte(bar).sort.reverse
     while people.length > 0
       band_people = people.slice!(0, PREFERRED_BAND_SIZE)
