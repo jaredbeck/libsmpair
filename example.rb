@@ -4,7 +4,7 @@
 # bundle exec ./example.rb spec/input/players/08-cornell.txt 3.0 3
 require 'smpair'
 
-# usage instructions
+# usage instructions: how to invoke this example
 if ARGV.length != 3 then
   puts "Usage: ruby smpair.rb <players-file> <bar> <rounds>"
   puts " players-file".ljust(15) + "path to a csv file with headers (eg. name,rating)"
@@ -15,9 +15,8 @@ end
 
 # validate and load cmd line args
 player_list_filepath = ARGV[0]
-abort "Bar must be a decimal number." unless ARGV[1].strictly_decimal?
 bar = ARGV[1].to_f
-abort "Rounds must be an integer." unless ARGV[2].strictly_integer?
 rounds = ARGV[2].to_i
 
+# perform pariring
 Smpair.pair(player_list_filepath, bar, rounds)

@@ -7,6 +7,10 @@ require 'smpair/monkeypatch_core'
 
 module Smpair
   def self.pair(player_list_filepath, bar, rounds)
+
+    # validate arguments
+    abort "Bar must be a decimal number." unless bar.strictly_decimal?
+    abort "Rounds must be an integer." unless rounds.strictly_integer?
     
     # read csv player list and construct bands
     field = Field.read_csv player_list_filepath
