@@ -9,22 +9,23 @@ module Smpair
   def self.pair(player_list_filepath, bar, rounds)
 
     # validate arguments
-    abort "Bar must be a decimal number." unless bar.strictly_decimal?
-    abort "Rounds must be an integer." unless rounds.strictly_integer?
+    abort "Bar must be a decimal number." unless bar.respond_to?(:to_f)
+    abort "Rounds must be an integer." unless rounds.respond_to?(:to_i)
     
     # read csv player list and construct bands
     field = Field.read_csv player_list_filepath
     bands = field.bands bar, rounds
 
-    # dev. output
+    # dev. output: the field
     puts
     field.pretty_print
 
-    # puts "band".ljust(10) + "ratings".ljust(20) + "players".ljust(15) + "initial score"
-    # bands.each_with_index do |b,i|
-    #   rating_range = b.max.rating.round(2).to_s + " to " + b.min.rating.round(2).to_s
-    #   puts i.to_s.ljust(10) + rating_range.ljust(20) + b.count.to_s.ljust(15) + b.score.to_s
-    # end
+    # dev. output: the bands
+    puts "band".ljust(10) + "ratings".ljust(20) + "players".ljust(15) + "initial score"
+    bands.each_with_index do |b,i|
+      rating_range = b.max.rating.round(2).to_s + " to " + b.min.rating.round(2).to_s
+      puts i.to_s.ljust(10) + rating_range.ljust(20) + b.count.to_s.ljust(15) + b.score.to_s
+    end
 
     # MWPM - Minimum Weight Perfect Match
     stdin, stdout, stderr = Open3.popen3('python lib/mwm/mwm.py')
