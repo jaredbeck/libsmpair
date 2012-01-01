@@ -3,6 +3,7 @@ require 'smpair/band'
 require 'smpair/config'
 require 'smpair/person'
 require 'smpair/person_set'
+require 'smpair/mwm'
 
 # The Field is a collection of all players in the tournament
 class Field  
@@ -51,5 +52,11 @@ class Field
     sep.to_i 
   end
 
-  def initialize() @people = [] end
+  def initialize
+    @people = []
+  end
+
+  def matching
+    return MWM.matching(edges_for_mwpm)
+  end
 end

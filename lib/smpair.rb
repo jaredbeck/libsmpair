@@ -24,12 +24,6 @@ module Smpair
     end
 
     # MWPM - Minimum Weight Perfect Match
-    stdin, stdout, stderr = Open3.popen3('python lib/mwm/mwm.py')
-    field.edges_for_mwpm.each { |e| stdin.puts e }
-    stdin.close
-
-    puts
-    puts "Pairings:"
-    puts stdout.gets until stdout.eof?
+    puts "\nPairings:", field.matching.inspect
   end
 end
