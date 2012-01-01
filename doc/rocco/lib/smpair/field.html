@@ -16,7 +16,7 @@
           <a class="source" href="band.html">band.rb</a>
           <a class="source" href="config.html">config.rb</a>
           <a class="source" href="field.html">field.rb</a>
-          <a class="source" href="monkeypatch_core.html">monkeypatch_core.rb</a>
+          <a class="source" href="mwm.html">mwm.rb</a>
           <a class="source" href="person.html">person.rb</a>
           <a class="source" href="person_set.html">person_set.rb</a>
           <a class="source" href="version.html">version.rb</a>
@@ -43,7 +43,8 @@
 <span class="nb">require</span> <span class="s1">&#39;smpair/band&#39;</span>
 <span class="nb">require</span> <span class="s1">&#39;smpair/config&#39;</span>
 <span class="nb">require</span> <span class="s1">&#39;smpair/person&#39;</span>
-<span class="nb">require</span> <span class="s1">&#39;smpair/person_set&#39;</span></pre></div>
+<span class="nb">require</span> <span class="s1">&#39;smpair/person_set&#39;</span>
+<span class="nb">require</span> <span class="s1">&#39;smpair/mwm&#39;</span></pre></div>
       </td>
     </tr>
     <tr id='section-2'>
@@ -67,9 +68,21 @@
     <span class="k">end</span>
     <span class="k">return</span> <span class="n">f</span>
   <span class="k">end</span>
-  
-  <span class="k">def</span> <span class="nf">bands</span><span class="p">(</span><span class="n">bar</span><span class="p">,</span> <span class="n">rounds</span><span class="p">)</span>
-    <span class="n">bands</span> <span class="o">=</span> <span class="o">[</span><span class="no">Band</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">rating_gt</span><span class="p">(</span><span class="n">bar</span><span class="p">))</span><span class="o">]</span> <span class="c1"># first band contains players above bar</span>
+  </pre></div>
+      </td>
+    </tr>
+    <tr id='section-3'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-3">&#182;</a>
+        </div>
+        <p><code>bands</code> returns an array of bands based on the provided <code>bar</code>
+and number of <code>rounds</code>.  The first band contains players above 
+the <code>bar</code>.</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre>  <span class="k">def</span> <span class="nf">bands</span><span class="p">(</span><span class="n">bar</span><span class="p">,</span> <span class="n">rounds</span><span class="p">)</span>
+    <span class="n">bands</span> <span class="o">=</span> <span class="o">[</span><span class="no">Band</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">rating_gt</span><span class="p">(</span><span class="n">bar</span><span class="p">))</span><span class="o">]</span>
     <span class="n">people</span> <span class="o">=</span> <span class="n">rating_lte</span><span class="p">(</span><span class="n">bar</span><span class="p">)</span><span class="o">.</span><span class="n">sort</span><span class="o">.</span><span class="n">reverse</span>
     <span class="k">while</span> <span class="n">people</span><span class="o">.</span><span class="n">length</span> <span class="o">&gt;</span> <span class="mi">0</span>
       <span class="n">band_people</span> <span class="o">=</span> <span class="n">people</span><span class="o">.</span><span class="n">slice!</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="no">PREFERRED_BAND_SIZE</span><span class="p">)</span>
@@ -82,10 +95,10 @@
   <span class="k">def</span> <span class="nf">band_separation</span><span class="p">(</span><span class="nb">p</span><span class="p">,</span> <span class="n">r</span><span class="p">)</span></pre></div>
       </td>
     </tr>
-    <tr id='section-3'>
+    <tr id='section-4'>
       <td class=docs>
         <div class="pilwrap">
-          <a class="pilcrow" href="#section-3">&#182;</a>
+          <a class="pilcrow" href="#section-4">&#182;</a>
         </div>
         <p>The usual separation between bands is one McMahon point, but this is increased
 when a band contains a large number of players. The separation between a given
@@ -100,10 +113,10 @@ with the limitations on the value of S (see below)</p>
     </pre></div>
       </td>
     </tr>
-    <tr id='section-4'>
+    <tr id='section-5'>
       <td class=docs>
         <div class="pilwrap">
-          <a class="pilcrow" href="#section-4">&#182;</a>
+          <a class="pilcrow" href="#section-5">&#182;</a>
         </div>
         <p>The value of S ranges between a minimum of 1 and a maximum of R/3, rounded up</p>
 
@@ -116,7 +129,13 @@ with the limitations on the value of S (see below)</p>
     <span class="n">sep</span><span class="o">.</span><span class="n">to_i</span> 
   <span class="k">end</span>
 
-  <span class="k">def</span> <span class="nf">initialize</span><span class="p">()</span> <span class="vi">@people</span> <span class="o">=</span> <span class="o">[]</span> <span class="k">end</span>
+  <span class="k">def</span> <span class="nf">initialize</span>
+    <span class="vi">@people</span> <span class="o">=</span> <span class="o">[]</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="nf">matching</span>
+    <span class="k">return</span> <span class="no">MWM</span><span class="o">.</span><span class="n">matching</span><span class="p">(</span><span class="n">edges_for_mwpm</span><span class="p">)</span>
+  <span class="k">end</span>
 <span class="k">end</span></pre></div>
       </td>
     </tr>

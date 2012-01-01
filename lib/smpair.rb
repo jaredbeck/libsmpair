@@ -5,6 +5,14 @@ require 'smpair/version'
 require 'smpair/field'
 
 module Smpair
+
+  # `pair` takes a set of players, a decimal `bar`, and an integer number
+  # of `rounds`.  It returns an array of pairings.  Each paring is an
+  # array with two elements: the identifiers of the paired players.
+  #
+  # * `bar` is a decimal rating threshold defining the top band
+  # * `rounds` is the total number of rounds in the tournament
+  #
   def self.pair(player_list_filepath, bar, rounds)
 
     # validate arguments
@@ -23,8 +31,7 @@ module Smpair
       puts i.to_s.ljust(10) + rating_range.ljust(20) + b.count.to_s.ljust(15) + b.score.to_s
     end
 
-    # MWPM - Minimum Weight Perfect Match
-    puts "\nPairings:"
-    field.matching.each{|edge| puts edge[0].to_s.ljust(5) + edge[1].to_s.ljust(5)}
+    # Minimum Weight Perfect Match (MWPM)
+    return field.matching
   end
 end

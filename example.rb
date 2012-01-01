@@ -19,4 +19,6 @@ bar = ARGV[1].to_f
 rounds = ARGV[2].to_i
 
 # perform pariring
-Smpair.pair(player_list_filepath, bar, rounds)
+matching = Smpair.pair(player_list_filepath, bar, rounds)
+puts "\nPairings:"
+matching.each{|edge| puts edge[0].to_s.ljust(5) + edge[1].to_s.ljust(5)}

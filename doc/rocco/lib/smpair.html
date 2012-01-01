@@ -16,7 +16,7 @@
           <a class="source" href="smpair/band.html">band.rb</a>
           <a class="source" href="smpair/config.html">config.rb</a>
           <a class="source" href="smpair/field.html">field.rb</a>
-          <a class="source" href="smpair/monkeypatch_core.html">monkeypatch_core.rb</a>
+          <a class="source" href="smpair/mwm.html">mwm.rb</a>
           <a class="source" href="smpair/person.html">person.rb</a>
           <a class="source" href="smpair/person_set.html">person_set.rb</a>
           <a class="source" href="smpair/version.html">version.rb</a>
@@ -36,20 +36,14 @@
         <div class="pilwrap">
           <a class="pilcrow" href="#section-1">&#182;</a>
         </div>
-        <p>The main file to define our gem&rsquo;s code. This is the file that will be
-required by Bundler (or any similarly smart system) when our gem is loaded.
-This file defines a module which we can use as a namespace for all our gem&rsquo;s
-code. It&rsquo;s best practice to put our code in&hellip;</p>
+        <p>AGA Swiss McMahon Pairing</p>
       </td>
       <td class=code>
         <div class='highlight'><pre><span class="nb">require</span> <span class="s2">&quot;open3&quot;</span>
 <span class="nb">require</span> <span class="s1">&#39;smpair/version&#39;</span>
 <span class="nb">require</span> <span class="s1">&#39;smpair/field&#39;</span>
-<span class="nb">require</span> <span class="s1">&#39;smpair/monkeypatch_core&#39;</span>
 
-<span class="k">module</span> <span class="nn">Smpair</span>
-  <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">pair</span><span class="p">(</span><span class="n">player_list_filepath</span><span class="p">,</span> <span class="n">bar</span><span class="p">,</span> <span class="n">rounds</span><span class="p">)</span>
-    </pre></div>
+<span class="k">module</span> <span class="nn">Smpair</span></pre></div>
       </td>
     </tr>
     <tr id='section-2'>
@@ -57,11 +51,17 @@ code. It&rsquo;s best practice to put our code in&hellip;</p>
         <div class="pilwrap">
           <a class="pilcrow" href="#section-2">&#182;</a>
         </div>
-        <p>read csv player list and construct bands</p>
+        <p><code>pair</code> takes a set of players, a decimal <code>bar</code>, and an integer number
+of <code>rounds</code>.  It returns an array of pairings.  Each paring is an
+array with two elements: the identifiers of the paired players.</p>
+
+<ul>
+<li><code>bar</code> is a decimal rating threshold defining the top band</li>
+<li><code>rounds</code> is the total number of rounds in the tournament</li>
+</ul>
       </td>
       <td class=code>
-        <div class='highlight'><pre>    <span class="n">field</span> <span class="o">=</span> <span class="no">Field</span><span class="o">.</span><span class="n">read_csv</span> <span class="n">player_list_filepath</span>
-    <span class="n">bands</span> <span class="o">=</span> <span class="n">field</span><span class="o">.</span><span class="n">bands</span> <span class="n">bar</span><span class="p">,</span> <span class="n">rounds</span></pre></div>
+        <div class='highlight'><pre>  <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">pair</span><span class="p">(</span><span class="n">player_list_filepath</span><span class="p">,</span> <span class="n">bar</span><span class="p">,</span> <span class="n">rounds</span><span class="p">)</span></pre></div>
       </td>
     </tr>
     <tr id='section-3'>
@@ -69,11 +69,12 @@ code. It&rsquo;s best practice to put our code in&hellip;</p>
         <div class="pilwrap">
           <a class="pilcrow" href="#section-3">&#182;</a>
         </div>
-        <p>dev. output</p>
+        <p>validate arguments</p>
       </td>
       <td class=code>
-        <div class='highlight'><pre>    <span class="nb">puts</span>
-    <span class="n">field</span><span class="o">.</span><span class="n">pretty_print</span></pre></div>
+        <div class='highlight'><pre>    <span class="nb">abort</span> <span class="s2">&quot;Bar must be a decimal number.&quot;</span> <span class="k">unless</span> <span class="n">bar</span><span class="o">.</span><span class="n">respond_to?</span><span class="p">(</span><span class="ss">:to_f</span><span class="p">)</span>
+    <span class="nb">abort</span> <span class="s2">&quot;Rounds must be an integer.&quot;</span> <span class="k">unless</span> <span class="n">rounds</span><span class="o">.</span><span class="n">respond_to?</span><span class="p">(</span><span class="ss">:to_i</span><span class="p">)</span>
+    </pre></div>
       </td>
     </tr>
     <tr id='section-4'>
@@ -81,14 +82,11 @@ code. It&rsquo;s best practice to put our code in&hellip;</p>
         <div class="pilwrap">
           <a class="pilcrow" href="#section-4">&#182;</a>
         </div>
-        <p>puts &ldquo;band&rdquo;.ljust(10) + &ldquo;ratings&rdquo;.ljust(20) + &ldquo;players&rdquo;.ljust(15) + &ldquo;initial score&rdquo;
-bands.each<em>with</em>index do |b,i|
-  rating<em>range = b.max.rating.round(2).to</em>s + &ldquo; to &rdquo; + b.min.rating.round(2).to<em>s
-  puts i.to</em>s.ljust(10) + rating<em>range.ljust(20) + b.count.to</em>s.ljust(15) + b.score.to_s
-end</p>
+        <p>read csv player list</p>
       </td>
       <td class=code>
-        <div class='highlight'><pre></pre></div>
+        <div class='highlight'><pre>    <span class="n">field</span> <span class="o">=</span> <span class="no">Field</span><span class="o">.</span><span class="n">read_csv</span> <span class="n">player_list_filepath</span>
+    <span class="n">field</span><span class="o">.</span><span class="n">pretty_print</span> <span class="c1"># dev. output</span></pre></div>
       </td>
     </tr>
     <tr id='section-5'>
@@ -96,17 +94,27 @@ end</p>
         <div class="pilwrap">
           <a class="pilcrow" href="#section-5">&#182;</a>
         </div>
-        <p>MWPM &ndash; Minimum Weight Perfect Match</p>
+        <p>construct bands</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre>    <span class="n">bands</span> <span class="o">=</span> <span class="n">field</span><span class="o">.</span><span class="n">bands</span> <span class="n">bar</span><span class="p">,</span> <span class="n">rounds</span>
+    <span class="nb">puts</span> <span class="s2">&quot;band&quot;</span><span class="o">.</span><span class="n">ljust</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;ratings&quot;</span><span class="o">.</span><span class="n">ljust</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;players&quot;</span><span class="o">.</span><span class="n">ljust</span><span class="p">(</span><span class="mi">15</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;initial score&quot;</span>
+    <span class="n">bands</span><span class="o">.</span><span class="n">each_with_index</span> <span class="k">do</span> <span class="o">|</span><span class="n">b</span><span class="p">,</span><span class="n">i</span><span class="o">|</span>
+      <span class="n">rating_range</span> <span class="o">=</span> <span class="n">b</span><span class="o">.</span><span class="n">max</span><span class="o">.</span><span class="n">rating</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">to_s</span> <span class="o">+</span> <span class="s2">&quot; to &quot;</span> <span class="o">+</span> <span class="n">b</span><span class="o">.</span><span class="n">min</span><span class="o">.</span><span class="n">rating</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">to_s</span>
+      <span class="nb">puts</span> <span class="n">i</span><span class="o">.</span><span class="n">to_s</span><span class="o">.</span><span class="n">ljust</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span> <span class="o">+</span> <span class="n">rating_range</span><span class="o">.</span><span class="n">ljust</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span> <span class="o">+</span> <span class="n">b</span><span class="o">.</span><span class="n">count</span><span class="o">.</span><span class="n">to_s</span><span class="o">.</span><span class="n">ljust</span><span class="p">(</span><span class="mi">15</span><span class="p">)</span> <span class="o">+</span> <span class="n">b</span><span class="o">.</span><span class="n">score</span><span class="o">.</span><span class="n">to_s</span>
+    <span class="k">end</span></pre></div>
+      </td>
+    </tr>
+    <tr id='section-6'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-6">&#182;</a>
+        </div>
+        <p>Minimum Weight Perfect Match (MWPM)</p>
 
       </td>
       <td class=code>
-        <div class='highlight'><pre>    <span class="n">stdin</span><span class="p">,</span> <span class="n">stdout</span><span class="p">,</span> <span class="n">stderr</span> <span class="o">=</span> <span class="no">Open3</span><span class="o">.</span><span class="n">popen3</span><span class="p">(</span><span class="s1">&#39;python lib/mwm/mwm.py&#39;</span><span class="p">)</span>
-    <span class="n">field</span><span class="o">.</span><span class="n">edges_for_mwpm</span><span class="o">.</span><span class="n">each</span> <span class="p">{</span> <span class="o">|</span><span class="n">e</span><span class="o">|</span> <span class="n">stdin</span><span class="o">.</span><span class="n">puts</span> <span class="n">e</span> <span class="p">}</span>
-    <span class="n">stdin</span><span class="o">.</span><span class="n">close</span>
-
-    <span class="nb">puts</span>
-    <span class="nb">puts</span> <span class="s2">&quot;Pairings:&quot;</span>
-    <span class="nb">puts</span> <span class="n">stdout</span><span class="o">.</span><span class="n">gets</span> <span class="k">until</span> <span class="n">stdout</span><span class="o">.</span><span class="n">eof?</span>
+        <div class='highlight'><pre>    <span class="k">return</span> <span class="n">field</span><span class="o">.</span><span class="n">matching</span>
   <span class="k">end</span>
 <span class="k">end</span></pre></div>
       </td>
