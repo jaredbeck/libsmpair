@@ -15,6 +15,7 @@
           <a class="source" href="../smpair.html">smpair.rb</a>
           <a class="source" href="band.html">band.rb</a>
           <a class="source" href="config.html">config.rb</a>
+          <a class="source" href="exceptions.html">exceptions.rb</a>
           <a class="source" href="field.html">field.rb</a>
           <a class="source" href="mwm.html">mwm.rb</a>
           <a class="source" href="person.html">person.rb</a>
@@ -62,7 +63,8 @@
 <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="n">n</span><span class="p">,</span><span class="n">r</span><span class="p">)</span>
   <span class="vi">@name</span> <span class="o">=</span> <span class="n">n</span><span class="o">.</span><span class="n">to_s</span>
   <span class="vi">@rating</span> <span class="o">=</span> <span class="n">r</span><span class="o">.</span><span class="n">to_f</span>
-  <span class="n">raise_if_not_valid</span>
+  <span class="k">raise</span> <span class="no">SmpairInvalidPlayerError</span><span class="p">,</span> <span class="s2">&quot;Name is required&quot;</span> <span class="k">if</span> <span class="vi">@name</span><span class="o">.</span><span class="n">nil?</span> <span class="ow">or</span> <span class="vi">@name</span><span class="o">.</span><span class="n">strip</span><span class="o">.</span><span class="n">empty?</span>
+  <span class="k">raise</span> <span class="no">SmpairInvalidPlayerError</span><span class="p">,</span> <span class="s2">&quot;Invalid rating&quot;</span> <span class="k">unless</span> <span class="n">valid_rating?</span>
 <span class="k">end</span></pre></div>
       </td>
     </tr>
@@ -117,12 +119,7 @@ for the remainder of the field.&rdquo;</p></li>
         <h3>Private methods</h3>
       </td>
       <td class=code>
-        <div class='highlight'><pre><span class="kp">private</span>
-
-<span class="k">def</span> <span class="nf">raise_if_not_valid</span>
-  <span class="k">raise</span> <span class="s2">&quot;Name is required&quot;</span> <span class="k">if</span> <span class="vi">@name</span><span class="o">.</span><span class="n">nil?</span> <span class="ow">or</span> <span class="vi">@name</span><span class="o">.</span><span class="n">strip</span><span class="o">.</span><span class="n">empty?</span>
-  <span class="k">raise</span> <span class="s2">&quot;Invalid rating&quot;</span> <span class="k">unless</span> <span class="n">valid_rating?</span>
-<span class="k">end</span></pre></div>
+        <div class='highlight'><pre><span class="kp">private</span></pre></div>
       </td>
     </tr>
     <tr id='section-5'>

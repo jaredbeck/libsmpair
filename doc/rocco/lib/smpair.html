@@ -15,6 +15,7 @@
           <a class="source" href="smpair.html">smpair.rb</a>
           <a class="source" href="smpair/band.html">band.rb</a>
           <a class="source" href="smpair/config.html">config.rb</a>
+          <a class="source" href="smpair/exceptions.html">exceptions.rb</a>
           <a class="source" href="smpair/field.html">field.rb</a>
           <a class="source" href="smpair/mwm.html">mwm.rb</a>
           <a class="source" href="smpair/person.html">person.rb</a>
@@ -41,6 +42,7 @@
       <td class=code>
         <div class='highlight'><pre><span class="nb">require</span> <span class="s1">&#39;smpair/version&#39;</span>
 <span class="nb">require</span> <span class="s1">&#39;smpair/field&#39;</span>
+<span class="nb">require</span> <span class="s1">&#39;smpair/exceptions&#39;</span>
 
 <span class="k">module</span> <span class="nn">Smpair</span></pre></div>
       </td>
@@ -55,14 +57,16 @@ of <code>rounds</code>.  It returns an array of pairings.  Each paring is an
 array with two elements: the identifiers of the paired players.</p>
 
 <ul>
-<li><code>players</code> is ennumerable and its elements <code>respond_to</code> certain 
-methods (see below)</li>
+<li><code>players</code> is an array of hashes</li>
 <li><code>bar</code> is a decimal rating threshold defining the top band</li>
 <li><code>rounds</code> is the total number of rounds in the tournament</li>
 </ul>
       </td>
       <td class=code>
-        <div class='highlight'><pre>  <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">pair</span><span class="p">(</span><span class="n">players</span><span class="p">,</span> <span class="n">bar</span><span class="p">,</span> <span class="n">rounds</span><span class="p">)</span></pre></div>
+        <div class='highlight'><pre>  <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">pair</span><span class="p">(</span><span class="n">players</span><span class="p">,</span> <span class="n">bar</span><span class="p">,</span> <span class="n">rounds</span><span class="p">)</span>
+    <span class="n">validate_argument</span> <span class="n">players</span><span class="o">.</span><span class="n">respond_to?</span><span class="p">(</span><span class="ss">:each</span><span class="p">),</span> <span class="s2">&quot;Players must be ennumerable&quot;</span>
+    <span class="n">validate_argument</span> <span class="n">bar</span><span class="o">.</span><span class="n">respond_to?</span><span class="p">(</span><span class="ss">:to_f</span><span class="p">),</span> <span class="s2">&quot;Bar must be a decimal number&quot;</span>
+    <span class="n">validate_argument</span> <span class="n">rounds</span><span class="o">.</span><span class="n">respond_to?</span><span class="p">(</span><span class="ss">:to_i</span><span class="p">),</span> <span class="s2">&quot;Rounds must be an integer&quot;</span></pre></div>
       </td>
     </tr>
     <tr id='section-3'>
@@ -70,13 +74,10 @@ methods (see below)</li>
         <div class="pilwrap">
           <a class="pilcrow" href="#section-3">&#182;</a>
         </div>
-        <p>validate arguments</p>
+        <p>build field from players array</p>
       </td>
       <td class=code>
-        <div class='highlight'><pre>    <span class="nb">abort</span> <span class="s2">&quot;Players must be ennumerable&quot;</span> <span class="k">unless</span> <span class="n">players</span><span class="o">.</span><span class="n">respond_to?</span><span class="p">(</span><span class="ss">:each</span><span class="p">)</span>
-    <span class="nb">abort</span> <span class="s2">&quot;Bar must be a decimal number&quot;</span> <span class="k">unless</span> <span class="n">bar</span><span class="o">.</span><span class="n">respond_to?</span><span class="p">(</span><span class="ss">:to_f</span><span class="p">)</span>
-    <span class="nb">abort</span> <span class="s2">&quot;Rounds must be an integer&quot;</span> <span class="k">unless</span> <span class="n">rounds</span><span class="o">.</span><span class="n">respond_to?</span><span class="p">(</span><span class="ss">:to_i</span><span class="p">)</span>
-    </pre></div>
+        <div class='highlight'><pre>    <span class="n">field</span> <span class="o">=</span> <span class="no">Field</span><span class="o">.</span><span class="n">new</span> <span class="n">players</span></pre></div>
       </td>
     </tr>
     <tr id='section-4'>
@@ -84,11 +85,10 @@ methods (see below)</li>
         <div class="pilwrap">
           <a class="pilcrow" href="#section-4">&#182;</a>
         </div>
-        <p>read csv player list</p>
+        <p>dev. output</p>
       </td>
       <td class=code>
-        <div class='highlight'><pre>    <span class="n">field</span> <span class="o">=</span> <span class="no">Field</span><span class="o">.</span><span class="n">read_csv</span> <span class="n">player_list_filepath</span>
-    <span class="n">field</span><span class="o">.</span><span class="n">pretty_print</span> <span class="c1"># dev. output</span></pre></div>
+        <div class='highlight'><pre>    <span class="n">field</span><span class="o">.</span><span class="n">pretty_print</span> </pre></div>
       </td>
     </tr>
     <tr id='section-5'>
@@ -113,11 +113,27 @@ methods (see below)</li>
           <a class="pilcrow" href="#section-6">&#182;</a>
         </div>
         <p>Minimum Weight Perfect Match (MWPM)</p>
-
       </td>
       <td class=code>
         <div class='highlight'><pre>    <span class="k">return</span> <span class="n">field</span><span class="o">.</span><span class="n">matching</span>
   <span class="k">end</span>
+
+  <span class="kp">private</span></pre></div>
+      </td>
+    </tr>
+    <tr id='section-7'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-7">&#182;</a>
+        </div>
+        <p><code>assert_valid_argument</code> provides a nice shorthand</p>
+
+      </td>
+      <td class=code>
+        <div class='highlight'><pre>  <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">validate_argument</span><span class="p">(</span><span class="n">success</span><span class="p">,</span> <span class="n">message</span><span class="p">)</span>
+    <span class="k">raise</span> <span class="no">SmpairArgumentError</span><span class="p">,</span> <span class="n">message</span> <span class="k">unless</span> <span class="n">success</span>
+  <span class="k">end</span>
+
 <span class="k">end</span></pre></div>
       </td>
     </tr>

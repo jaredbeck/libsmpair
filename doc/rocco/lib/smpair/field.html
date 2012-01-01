@@ -15,6 +15,7 @@
           <a class="source" href="../smpair.html">smpair.rb</a>
           <a class="source" href="band.html">band.rb</a>
           <a class="source" href="config.html">config.rb</a>
+          <a class="source" href="exceptions.html">exceptions.rb</a>
           <a class="source" href="field.html">field.rb</a>
           <a class="source" href="mwm.html">mwm.rb</a>
           <a class="source" href="person.html">person.rb</a>
@@ -56,19 +57,7 @@
       </td>
       <td class=code>
         <div class='highlight'><pre><span class="k">class</span> <span class="nc">Field</span>  
-  <span class="kp">include</span> <span class="no">PersonSet</span>
-
-  <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">read_csv</span><span class="p">(</span><span class="n">filepath</span><span class="p">)</span>
-    <span class="n">c</span> <span class="o">=</span> <span class="no">CSV</span><span class="o">.</span><span class="n">open</span> <span class="n">filepath</span><span class="p">,</span> <span class="ss">:headers</span> <span class="o">=&gt;</span> <span class="kp">true</span> <span class="k">rescue</span>
-      <span class="nb">abort</span> <span class="s2">&quot;Unable to open file: &quot;</span> <span class="o">+</span> <span class="vg">$!</span><span class="o">.</span><span class="n">to_s</span>
-    <span class="n">f</span> <span class="o">=</span> <span class="kp">new</span>
-    <span class="n">c</span><span class="o">.</span><span class="n">each_with_index</span> <span class="k">do</span> <span class="o">|</span><span class="n">r</span><span class="p">,</span><span class="n">i</span><span class="o">|</span>
-      <span class="n">f</span><span class="o">.</span><span class="n">push</span> <span class="no">Person</span><span class="o">.</span><span class="n">new</span> <span class="n">r</span><span class="o">[</span><span class="s1">&#39;name&#39;</span><span class="o">]</span><span class="p">,</span> <span class="n">r</span><span class="o">[</span><span class="s1">&#39;rating&#39;</span><span class="o">]</span> <span class="k">rescue</span>
-        <span class="nb">abort</span> <span class="s2">&quot;Invalid player record on line </span><span class="si">#{</span><span class="n">i</span><span class="o">+</span><span class="mi">2</span><span class="si">}</span><span class="s2">: &quot;</span> <span class="o">+</span> <span class="vg">$!</span><span class="o">.</span><span class="n">to_s</span>
-    <span class="k">end</span>
-    <span class="k">return</span> <span class="n">f</span>
-  <span class="k">end</span>
-  </pre></div>
+  <span class="kp">include</span> <span class="no">PersonSet</span></pre></div>
       </td>
     </tr>
     <tr id='section-3'>
@@ -129,8 +118,8 @@ with the limitations on the value of S (see below)</p>
     <span class="n">sep</span><span class="o">.</span><span class="n">to_i</span> 
   <span class="k">end</span>
 
-  <span class="k">def</span> <span class="nf">initialize</span>
-    <span class="vi">@people</span> <span class="o">=</span> <span class="o">[]</span>
+  <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="n">players</span><span class="p">)</span>
+    <span class="vi">@people</span> <span class="o">=</span> <span class="n">players</span><span class="o">.</span><span class="n">map</span> <span class="p">{</span><span class="o">|</span><span class="nb">p</span><span class="o">|</span> <span class="no">Person</span><span class="o">.</span><span class="n">new</span> <span class="nb">p</span><span class="o">[</span><span class="ss">:name</span><span class="o">]</span><span class="p">,</span> <span class="nb">p</span><span class="o">[</span><span class="ss">:rating</span><span class="o">]</span><span class="p">}</span>
   <span class="k">end</span>
 
   <span class="k">def</span> <span class="nf">matching</span>
