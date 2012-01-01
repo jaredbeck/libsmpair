@@ -50,17 +50,19 @@
         <div class="pilwrap">
           <a class="pilcrow" href="#section-2">&#182;</a>
         </div>
-        <p><code>pair</code> takes a set of players, a decimal <code>bar</code>, and an integer number
+        <p><code>pair</code> takes a set of <code>players</code>, a decimal <code>bar</code>, and an integer number
 of <code>rounds</code>.  It returns an array of pairings.  Each paring is an
 array with two elements: the identifiers of the paired players.</p>
 
 <ul>
+<li><code>players</code> is ennumerable and its elements <code>respond_to</code> certain 
+methods (see below)</li>
 <li><code>bar</code> is a decimal rating threshold defining the top band</li>
 <li><code>rounds</code> is the total number of rounds in the tournament</li>
 </ul>
       </td>
       <td class=code>
-        <div class='highlight'><pre>  <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">pair</span><span class="p">(</span><span class="n">player_list_filepath</span><span class="p">,</span> <span class="n">bar</span><span class="p">,</span> <span class="n">rounds</span><span class="p">)</span></pre></div>
+        <div class='highlight'><pre>  <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">pair</span><span class="p">(</span><span class="n">players</span><span class="p">,</span> <span class="n">bar</span><span class="p">,</span> <span class="n">rounds</span><span class="p">)</span></pre></div>
       </td>
     </tr>
     <tr id='section-3'>
@@ -71,8 +73,9 @@ array with two elements: the identifiers of the paired players.</p>
         <p>validate arguments</p>
       </td>
       <td class=code>
-        <div class='highlight'><pre>    <span class="nb">abort</span> <span class="s2">&quot;Bar must be a decimal number.&quot;</span> <span class="k">unless</span> <span class="n">bar</span><span class="o">.</span><span class="n">respond_to?</span><span class="p">(</span><span class="ss">:to_f</span><span class="p">)</span>
-    <span class="nb">abort</span> <span class="s2">&quot;Rounds must be an integer.&quot;</span> <span class="k">unless</span> <span class="n">rounds</span><span class="o">.</span><span class="n">respond_to?</span><span class="p">(</span><span class="ss">:to_i</span><span class="p">)</span>
+        <div class='highlight'><pre>    <span class="nb">abort</span> <span class="s2">&quot;Players must be ennumerable&quot;</span> <span class="k">unless</span> <span class="n">players</span><span class="o">.</span><span class="n">respond_to?</span><span class="p">(</span><span class="ss">:each</span><span class="p">)</span>
+    <span class="nb">abort</span> <span class="s2">&quot;Bar must be a decimal number&quot;</span> <span class="k">unless</span> <span class="n">bar</span><span class="o">.</span><span class="n">respond_to?</span><span class="p">(</span><span class="ss">:to_f</span><span class="p">)</span>
+    <span class="nb">abort</span> <span class="s2">&quot;Rounds must be an integer&quot;</span> <span class="k">unless</span> <span class="n">rounds</span><span class="o">.</span><span class="n">respond_to?</span><span class="p">(</span><span class="ss">:to_i</span><span class="p">)</span>
     </pre></div>
       </td>
     </tr>

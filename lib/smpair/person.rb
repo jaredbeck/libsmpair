@@ -13,7 +13,8 @@ end
 def initialize(n,r)
   @name = n.to_s
   @rating = r.to_f
-  raise_if_not_valid
+  raise SmpairInvalidPlayerError, "Name is required" if @name.nil? or @name.strip.empty?
+  raise SmpairInvalidPlayerError, "Invalid rating" unless valid_rating?
 end
 
 # `mwpm_weight` takes an `other_person` and returns an integer weight
@@ -54,11 +55,6 @@ end
 
 #### Private methods
 private
-
-def raise_if_not_valid
-  raise "Name is required" if @name.nil? or @name.strip.empty?
-  raise "Invalid rating" unless valid_rating?
-end
 
 # `valid_rating?` returns true if self.rating is a valid decimal
 # AGA rating. In the AGA, valid kyu ratings are -1.0 and below,

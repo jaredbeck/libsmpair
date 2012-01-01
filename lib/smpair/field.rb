@@ -9,17 +9,6 @@ require 'smpair/mwm'
 class Field  
   include PersonSet
 
-  def self.read_csv(filepath)
-    c = CSV.open filepath, :headers => true rescue
-      abort "Unable to open file: " + $!.to_s
-    f = new
-    c.each_with_index do |r,i|
-      f.push Person.new r['name'], r['rating'] rescue
-        abort "Invalid player record on line #{i+2}: " + $!.to_s
-    end
-    return f
-  end
-  
   # `bands` returns an array of bands based on the provided `bar`
   # and number of `rounds`.  The first band contains players above 
   # the `bar`.
@@ -52,8 +41,8 @@ class Field
     sep.to_i 
   end
 
-  def initialize
-    @people = []
+  def initialize(players)
+    @people = players.map {|p| Person.new p[:name], p[:rating]}
   end
 
   def matching

@@ -18,7 +18,15 @@ player_list_filepath = ARGV[0]
 bar = ARGV[1].to_f
 rounds = ARGV[2].to_i
 
+# read the input file
+c = CSV.open player_list_filepath, :headers => true rescue
+  abort "Unable to open file: " + $!.to_s
+players = []
+c.each_with_index do |r,i|
+  players << {name: r['name'], rating: r['rating']}
+end
+
 # perform pariring
-matching = Smpair.pair(player_list_filepath, bar, rounds)
+matching = Smpair.pair(players, bar, rounds)
 puts "\nPairings:"
 matching.each{|edge| puts edge[0].to_s.ljust(5) + edge[1].to_s.ljust(5)}

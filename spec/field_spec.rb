@@ -4,18 +4,16 @@ PLAYER_LIST_DIR = "spec/input/players"
 
 describe Field do
 
-  context "when first created" do
-    it { should have(0).items }
+  context "when given a player set with one player" do
+    players =[{name: 'jb', rating: 3.0}]
+    subject { Field.new(players) }
+    its(:count) { should eq(1) }
   end
 
-  context "after reading a player list with four players" do
-    subject { Field.read_csv PLAYER_LIST_DIR + '/01.csv' }
-    its(:count) { should eq(4) }
-  end
-
-  context "after reading a list where lisa is the lowest ranked" do
-    subject { Field.read_csv PLAYER_LIST_DIR + '/01.csv' }
-    its('sort.first.name') { should eq "Lisa Scott"}
+  context "when given a set where lisa is the lowest ranked" do
+    players =[{name: 'jb', rating: 3.0}, {name: 'lisa', rating: -4.0}]
+    subject { Field.new(players) }
+    its('sort.first.name') { should eq "lisa"}
   end
 
 end

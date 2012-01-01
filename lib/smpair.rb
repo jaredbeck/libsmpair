@@ -2,25 +2,28 @@
 
 require 'smpair/version'
 require 'smpair/field'
+require 'smpair/exceptions'
 
 module Smpair
 
-  # `pair` takes a set of players, a decimal `bar`, and an integer number
+  # `pair` takes a set of `players`, a decimal `bar`, and an integer number
   # of `rounds`.  It returns an array of pairings.  Each paring is an
   # array with two elements: the identifiers of the paired players.
   #
+  # * `players` is an array of hashes
   # * `bar` is a decimal rating threshold defining the top band
   # * `rounds` is the total number of rounds in the tournament
   #
-  def self.pair(player_list_filepath, bar, rounds)
+  def self.pair(players, bar, rounds)
+    validate_argument players.respond_to?(:each), "Players must be ennumerable"
+    validate_argument bar.respond_to?(:to_f), "Bar must be a decimal number"
+    validate_argument rounds.respond_to?(:to_i), "Rounds must be an integer"
 
-    # validate arguments
-    abort "Bar must be a decimal number." unless bar.respond_to?(:to_f)
-    abort "Rounds must be an integer." unless rounds.respond_to?(:to_i)
-    
-    # read csv player list
-    field = Field.read_csv player_list_filepath
-    field.pretty_print # dev. output
+    # build field from players array
+    field = Field.new players
+
+    # dev. output
+    field.pretty_print 
 
     # construct bands
     bands = field.bands bar, rounds
@@ -33,4 +36,12 @@ module Smpair
     # Minimum Weight Perfect Match (MWPM)
     return field.matching
   end
+
+  private
+
+  # `assert_valid_argument` provides a nice shorthand
+  def self.validate_argument(success, message)
+    raise SmpairArgumentError, message unless success
+  end
+
 end
