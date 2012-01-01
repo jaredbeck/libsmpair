@@ -1,8 +1,7 @@
 require "open3"
 
-# MWM defines an interface to Joris van Rantwijk's python implementation
-# of Maximum Weighted Matching
-# http://jorisvr.nl/maximummatching.html
+# MWM defines an interface to [Joris van Rantwijk's python implementation
+# of Maximum Weighted Matching](http://jorisvr.nl/maximummatching.html)
 
 class MWM
 
