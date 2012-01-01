@@ -15,7 +15,7 @@ module Smpair
   # * `rounds` is the total number of rounds in the tournament
   #
   # The hashes in the `players` array should have certain keys.
-  # See Person::initialize for more details.
+  # See `Person::initialize` for more details.
   #
   def self.pair(players, bar, rounds)
     validate_argument players.respond_to?(:each), "Players must be ennumerable"
@@ -40,6 +40,7 @@ module Smpair
     return field.matching
   end
 
+  #### Private methods
   private
 
   def self.validate_argument(success, message)

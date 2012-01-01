@@ -56,8 +56,8 @@ end
 #### Private methods
 private
 
-# `valid_rating?` returns true if self.rating is a valid decimal
-# AGA rating. In the AGA, valid kyu ratings are -1.0 and below,
+# `valid_rating?` returns true for valid AGA decimal
+# ratings. In the AGA, valid kyu ratings are -1.0 and below,
 # while valid dan ratings are 1.0 and above (including pros). There
 # is no upper or lower limit in the AGA database. The last time I
 # checked, ratings ranged from -49.67667 to 10.24712

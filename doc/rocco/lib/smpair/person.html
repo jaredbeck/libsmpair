@@ -60,9 +60,9 @@
   <span class="nb">self</span><span class="o">.</span><span class="n">rating</span> <span class="o">&lt;=&gt;</span> <span class="nb">p</span><span class="o">.</span><span class="n">rating</span>
 <span class="k">end</span>
 
-<span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="n">n</span><span class="p">,</span><span class="n">r</span><span class="p">)</span>
-  <span class="vi">@name</span> <span class="o">=</span> <span class="n">n</span><span class="o">.</span><span class="n">to_s</span>
-  <span class="vi">@rating</span> <span class="o">=</span> <span class="n">r</span><span class="o">.</span><span class="n">to_f</span>
+<span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="n">hsh</span><span class="p">)</span>
+  <span class="vi">@name</span> <span class="o">=</span> <span class="n">hsh</span><span class="o">[</span><span class="ss">:name</span><span class="o">].</span><span class="n">to_s</span>
+  <span class="vi">@rating</span> <span class="o">=</span> <span class="n">hsh</span><span class="o">[</span><span class="ss">:rating</span><span class="o">].</span><span class="n">to_f</span>
   <span class="k">raise</span> <span class="no">SmpairInvalidPlayerError</span><span class="p">,</span> <span class="s2">&quot;Name is required&quot;</span> <span class="k">if</span> <span class="vi">@name</span><span class="o">.</span><span class="n">nil?</span> <span class="ow">or</span> <span class="vi">@name</span><span class="o">.</span><span class="n">strip</span><span class="o">.</span><span class="n">empty?</span>
   <span class="k">raise</span> <span class="no">SmpairInvalidPlayerError</span><span class="p">,</span> <span class="s2">&quot;Invalid rating&quot;</span> <span class="k">unless</span> <span class="n">valid_rating?</span>
 <span class="k">end</span></pre></div>
@@ -127,8 +127,8 @@ for the remainder of the field.&rdquo;</p></li>
         <div class="pilwrap">
           <a class="pilcrow" href="#section-5">&#182;</a>
         </div>
-        <p><code>valid_rating?</code> returns true if self.rating is a valid decimal
-AGA rating. In the AGA, valid kyu ratings are -1.0 and below,
+        <p><code>valid_rating?</code> returns true for valid AGA decimal
+ratings. In the AGA, valid kyu ratings are -1.0 and below,
 while valid dan ratings are 1.0 and above (including pros). There
 is no upper or lower limit in the AGA database. The last time I
 checked, ratings ranged from -49.67667 to 10.24712</p>

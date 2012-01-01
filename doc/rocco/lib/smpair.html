@@ -52,15 +52,18 @@
         <div class="pilwrap">
           <a class="pilcrow" href="#section-2">&#182;</a>
         </div>
-        <p><code>pair</code> takes a set of <code>players</code>, a decimal <code>bar</code>, and an integer number
+        <p><code>pair</code> takes an array of <code>players</code>, a <code>bar</code>, and a number
 of <code>rounds</code>.  It returns an array of pairings.  Each paring is an
 array with two elements: the identifiers of the paired players.</p>
 
 <ul>
-<li><code>players</code> is an array of hashes</li>
+<li><code>players</code> is an array of hashes (see below)</li>
 <li><code>bar</code> is a decimal rating threshold defining the top band</li>
 <li><code>rounds</code> is the total number of rounds in the tournament</li>
 </ul>
+
+<p>The hashes in the <code>players</code> array should have certain keys.
+See <code>Person::initialize</code> for more details.</p>
       </td>
       <td class=code>
         <div class='highlight'><pre>  <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">pair</span><span class="p">(</span><span class="n">players</span><span class="p">,</span> <span class="n">bar</span><span class="p">,</span> <span class="n">rounds</span><span class="p">)</span>
@@ -116,21 +119,21 @@ array with two elements: the identifiers of the paired players.</p>
       </td>
       <td class=code>
         <div class='highlight'><pre>    <span class="k">return</span> <span class="n">field</span><span class="o">.</span><span class="n">matching</span>
-  <span class="k">end</span>
-
-  <span class="kp">private</span></pre></div>
+  <span class="k">end</span></pre></div>
       </td>
     </tr>
-    <tr id='section-7'>
+    <tr id='section-Private_methods'>
       <td class=docs>
         <div class="pilwrap">
-          <a class="pilcrow" href="#section-7">&#182;</a>
+          <a class="pilcrow" href="#section-Private_methods">&#182;</a>
         </div>
-        <p><code>assert_valid_argument</code> provides a nice shorthand</p>
+        <h3>Private methods</h3>
 
       </td>
       <td class=code>
-        <div class='highlight'><pre>  <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">validate_argument</span><span class="p">(</span><span class="n">success</span><span class="p">,</span> <span class="n">message</span><span class="p">)</span>
+        <div class='highlight'><pre>  <span class="kp">private</span>
+
+  <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">validate_argument</span><span class="p">(</span><span class="n">success</span><span class="p">,</span> <span class="n">message</span><span class="p">)</span>
     <span class="k">raise</span> <span class="no">SmpairArgumentError</span><span class="p">,</span> <span class="n">message</span> <span class="k">unless</span> <span class="n">success</span>
   <span class="k">end</span>
 
