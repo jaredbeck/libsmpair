@@ -23,6 +23,9 @@ module Smpair
     validate_argument bar.respond_to?(:to_f), "Bar must be a decimal number"
     validate_argument rounds.respond_to?(:to_i), "Rounds must be an integer"
 
+    # Check external runtime dependencies
+    raise SmpairPythonError, "Smpair requires python" unless python_present?
+
     # build field from players array and construct bands
     field = Field.new players
     bands = field.bands bar, rounds
@@ -47,6 +50,13 @@ module Smpair
 
   def self.validate_argument(success, message)
     raise SmpairArgumentError, message unless success
+  end
+
+  # This is the simplest test I can think of to see if python is present.
+  # Effectively silence stderr by redirecting it to stdout.  Happily,
+  # this command works on windows too, even the output redirection!
+  def self.python_present?
+    `python -c 'print "hello"' 2>&1` == "hello\n"
   end
 
 end
