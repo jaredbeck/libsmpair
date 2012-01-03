@@ -1,6 +1,6 @@
 class Person
 
-attr_accessor :name, :rating, :score
+attr_accessor :id, :rating, :score
 include Comparable
 
 #### Public methods
@@ -11,9 +11,9 @@ def <=>(p)
 end
 
 def initialize(hsh)
-  @name = hsh[:name].to_s
+  @id = hsh[:id].to_s
   @rating = hsh[:rating].to_f
-  raise SmpairInvalidPlayerError, "Name is required" if @name.nil? or @name.strip.empty?
+  raise SmpairInvalidPlayerError, "ID is required" if @id.nil? or @id.strip.empty?
   raise SmpairInvalidPlayerError, "Invalid rating" unless valid_rating?
 end
 
@@ -50,7 +50,7 @@ def mwpm_weight(other_person)
 end
 
 def to_print_s
-  name.ljust(30) + rating.round(2).to_s.ljust(15) + score.to_s
+  id.ljust(10) + rating.round(2).to_s.ljust(15) + score.to_s
 end
 
 #### Private methods

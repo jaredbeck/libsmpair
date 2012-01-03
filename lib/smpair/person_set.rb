@@ -8,7 +8,7 @@ module PersonSet
   
   def pretty_print
     puts "\nThe Field:"
-    puts "#".ljust(4) + "name".ljust(30) + "rating".ljust(15) + "mcmahon score"
+    puts "#".ljust(4) + "id".ljust(10) + "rating".ljust(15) + "mcmahon score"
     @people.sort.reverse.each_with_index { |p,i| puts i.to_s.ljust(4) + p.to_print_s }
     puts
   end
@@ -30,7 +30,7 @@ module PersonSet
         # where a person plays themselves!  You cannot play against
         # yourself in a tournament :)
         if z > y then
-          # puts "#{y} #{z} #{a.name} (#{a.score}) vs. #{b.name} (#{b.score}) = #{a.mwpm_weight(b).to_s}"
+          # puts "#{y} #{z} #{a.id} (#{a.score}) vs. #{b.id} (#{b.score}) = #{a.mwpm_weight(b).to_s}"
           edges.push( "#{y} #{z} #{a.mwpm_weight(b).to_s}" )
         end
       end

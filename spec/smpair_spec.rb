@@ -40,8 +40,8 @@ describe Smpair do
     context "with two players" do
       before do
         @players = [
-          {name:'Joe', rating:1.5},
-          {name:'Jane', rating:2.5}
+          {id:'HAL9000', rating:1.5},
+          {id:'PDP11', rating:2.5}
           ]
       end
 

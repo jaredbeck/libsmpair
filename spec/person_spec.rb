@@ -3,16 +3,16 @@ require 'spec_helper'
 describe Person do
   describe "#new" do
 
-    it "requires a name" do
-      expect { Person.new({name: "", rating: 7}) }.
-        to raise_error(StandardError, "Name is required")
+    it "requires an id" do
+      expect { Person.new({id: "", rating: 7}) }.
+        to raise_error(SmpairInvalidPlayerError, "ID is required")
     end
 
     it "requires a valid rating" do
       bad_ratings = [nil, 0.0, -0.9, 0.7]
       bad_ratings.each do |r|
-        expect { Person.new({name: "Jared", rating: r}) }.
-          to raise_error(StandardError, "Invalid rating")
+        expect { Person.new({id: "007", rating: r}) }.
+          to raise_error(SmpairInvalidPlayerError, "Invalid rating")
       end
     end
 
