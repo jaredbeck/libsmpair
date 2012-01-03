@@ -40,13 +40,16 @@ describe Smpair do
     context "with two players" do
       before do
         @players = [
-          {id:'HAL9000', rating:1.5},
-          {id:'PDP11', rating:2.5}
+          {id:'HAL9000', rating:2.5},
+          {id:'PDP11', rating:1.5}
           ]
       end
 
       it "returns an array with two corresponding pairings" do
-        Smpair::pair(@players, @bar, @rounds).should == [[0, 1], [1, 0]]
+        result = Smpair::pair(@players, @bar, @rounds)
+        # HAL is stronger, so HAL is vertex 0,
+        # so mwm.py outputs HAL's pairing first
+        result.should == [['HAL9000', 'PDP11'], ['PDP11', 'HAL9000']]
       end
     end
   end

@@ -44,7 +44,11 @@ class Field
     @people = players.map {|p| Person.new p}
   end
 
+  # `matching` invokes MWM to get the pairings, then translates
+  # the ordinal numbers used by mwm back into Person IDs
   def matching
-    return MWM.matching(edges_for_mwpm)
+    result = MWM.matching(edges_for_mwpm)
+    ppl = pairing_order
+    result.map{|pair| [ppl[pair[0]].id, ppl[pair[1]].id]}
   end
 end

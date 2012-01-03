@@ -3,9 +3,9 @@ module PersonSet
 
   def each() @people.each { |p| yield p } end
   def empty?() @people.empty? end
-  def push(p) @people.push p end
+  def initialize() @people = [] end
   def size() @people.length end
-  
+
   def pretty_print
     puts "\nThe Field:"
     puts "#".ljust(4) + "id".ljust(10) + "rating".ljust(15) + "mcmahon score"
@@ -15,9 +15,7 @@ module PersonSet
 
   def edges_for_mwpm
     edges = []
-
-    # Given all people in the set sorted by descending score
-    ppl = @people.sort.reverse
+    ppl = pairing_order
 
     # Each possible pairing becomes a weighted edge in an undirected graph.
     # From this graph, a "perfect match" of edges with the lowest weights
@@ -38,7 +36,20 @@ module PersonSet
 
     edges
   end
-  
+
+  # `pairing_order` returns all people in the set sorted by descending
+  # rating.  People will be passed to `mwm.py` in this order.  It's
+  # important that this pairing order be well defined so that we can
+  # translate the result from `mwm.py` back into Person IDs later.
+  def pairing_order
+    @people.sort.reverse
+  end
+
+  def push(p)
+    raise SmpairInvalidPlayerError unless p.kind_of?(Person)
+    @people.push p
+  end
+
   def rating_gt(bar) @people.select { |p| p.rating > bar } end
   def rating_lte(bar) @people.select { |p| p.rating <= bar } end
 end
