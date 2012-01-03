@@ -1,7 +1,5 @@
 require 'spec_helper'
 
-PLAYER_LIST_DIR = "spec/input/players"
-
 describe Field do
 
   context "when given a player set with one player" do
